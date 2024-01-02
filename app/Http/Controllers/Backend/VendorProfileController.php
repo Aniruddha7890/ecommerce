@@ -7,13 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use File;
 
-class ProfileController extends Controller
+class VendorProfileController extends Controller
 {
     public function index(){
-        return view('admin.profile.index');
+        return view('vendor.dashboard.profile');
     }
-
-    /** Profile update */
 
     public function updateProfile(Request $request){
         $request->validate([
@@ -22,7 +20,7 @@ class ProfileController extends Controller
             'image' => ['image', 'max:2048']
         ]);
 
-        $user = Auth::user();
+        $user = Authth::user();
 
         if($request->hasFile('image')){
             if(File::exists(public_path($user->image))){
@@ -33,7 +31,7 @@ class ProfileController extends Controller
             $imageName = rand() . '_' . $image->getClientOriginalName();
             $image->move(public_path('uploads'), $imageName);
 
-            $path = 'uploads/'.$imageName;
+            $path = 'uploads/' . $imageName;
 
             $user->image = $path;
         }
@@ -46,8 +44,6 @@ class ProfileController extends Controller
 
         return redirect()->back();
     }
-
-    /** Password update */
 
     public function updatePassword(Request $request){
         $request->validate([
