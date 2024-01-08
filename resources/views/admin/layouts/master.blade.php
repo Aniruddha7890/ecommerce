@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="{{asset('backend/assets/modules/summernote/summernote-bs4.css')}}">
   <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="{{asset('backend/assets/css/bootstrap-iconpicker.min.css')}}">
 
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{asset('backend/assets/css/style.css')}}">
@@ -82,6 +83,7 @@
   <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="{{asset('backend/assets/js/bootstrap-iconpicker.bundle.min.js')}}"></script>
 
   <!-- Page Specific JS File -->
   <script src="{{asset('backend/assets/js/page/index-0.js')}}"></script>
@@ -135,12 +137,12 @@
                     Swal.fire({
                       title: "Deleted!",
                       text: data.message,
-                      icon: "success",                    
+                      icon: "success", 
                     });
                   window.location.reload();
                 }else if(data.status == 'error'){
                   Swal.fire({
-                      title: " Cant Delete!",
+                      title: "Cant Delete!",
                       text: data.message,
                       icon: "error",                    
                     });
