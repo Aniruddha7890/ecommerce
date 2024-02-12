@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Slider;
+use App\Models\ProductImageGallery;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class SliderDataTable extends DataTable
+class ProductImageGalleryDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -22,32 +22,14 @@ class SliderDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', function ($query){
-                $editBtn = "<a href='" . route('admin.slider.edit', $query->id) . "' class='btn btn-primary'><i class='far fa-edit'></i></a>";
-                $deleteBtn = "<a href='" . route('admin.slider.destroy', $query->id) . "' class='btn btn-danger delete-item ml-2'><i class='fas fa-trash'></i></a>";
-
-                return $editBtn.$deleteBtn;
-            })
-            ->addColumn('banner', function ($query) {
-                return $img = "<img src='" . asset($query->banner) . "' width='100px'></img>";
-            })
-            ->addColumn('status', function ($query) {
-                $active = "<i class='badge badge-success'>Active</i>";
-                $inActive = "<i class='badge badge-danger'>Inactive</i>";
-                if($query->status == 1){
-                    return $active;
-                }else {
-                    return $inActive;
-                }
-            })
-            ->rawColumns(['action', 'banner', 'status'])
+            ->addColumn('action', 'productimagegallery.action')
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Slider $model): QueryBuilder
+    public function query(ProductImageGallery $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -58,7 +40,7 @@ class SliderDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('slider-table')
+                    ->setTableId('productimagegallery-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -80,17 +62,15 @@ class SliderDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            
-            Column::make('id')->width(100),
-            Column::make('banner')->width(200),
-            Column::make('title')->width(200),
-            Column::make('serial')->width(100),
-            Column::make('status')->width(100),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
                   ->width(60)
-                  ->addClass('text-center')
+                  ->addClass('text-center'),
+            Column::make('id'),
+            Column::make('add your columns'),
+            Column::make('created_at'),
+            Column::make('updated_at'),
         ];
     }
 
@@ -99,6 +79,6 @@ class SliderDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Slider_' . date('YmdHis');
+        return 'ProductImageGallery_' . date('YmdHis');
     }
 }
