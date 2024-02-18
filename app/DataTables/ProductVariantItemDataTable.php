@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\ProductVariant;
+use App\Models\ProductVariantItem;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class ProductVariantDataTable extends DataTable
+class ProductVariantItemDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,11 +23,10 @@ class ProductVariantDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query){
-                $variantItems = "<a href='" . route('admin.products-variant-item.index', ['productId' => request()->product, 'variantId' => $query->id]) . "' class='btn btn-info mr-2'><i class='far fa-edit'></i> Variant Items</a>";
-                $editBtn = "<a href='" . route('admin.products-variant.edit', $query->id) . "' class='btn btn-primary'><i class='far fa-edit'></i></a>";
-                $deleteBtn = "<a href='" . route('admin.products-variant.destroy', $query->id) . "' class='btn btn-danger delete-item ml-2'><i class='fas fa-trash'></i></a>";
+                $editBtn = "<a href='" . route('admin.products-variant-item.edit', $query->id) . "' class='btn btn-primary'><i class='far fa-edit'></i></a>";
+                $deleteBtn = "<a href='" . route('admin.products-variant-item.destroy', $query->id) . "' class='btn btn-danger delete-item ml-2'><i class='fas fa-trash'></i></a>";
                 
-                return $variantItems.$editBtn.$deleteBtn;
+                return $editBtn.$deleteBtn;
             })
             ->addColumn('status', function($query){
                 if($query->status == 1){
@@ -44,16 +43,26 @@ class ProductVariantDataTable extends DataTable
 
                 return $button;
             })
-            ->rawColumns(['action', 'status'])
+            ->addColumn('is_default', function($query){
+                if($query->is_default == 1){
+                    return "<i class='badge badge-success'>Default</i>";
+                } else{
+                    return "<i class='badge badge-danger'>No</i>";
+                }
+            })
+            ->addColumn('variant_name', function($query){
+                return $query->productVariant->name;
+            })
+            ->rawColumns(['action', 'is_default', 'status'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(ProductVariant $model): QueryBuilder
+    public function query(ProductVariantItem $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->where('product_variant_id', request()->variantId)->newQuery();
     }
 
     /**
@@ -62,7 +71,7 @@ class ProductVariantDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('productvariant-table')
+                    ->setTableId('productvariantitem-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -84,14 +93,16 @@ class ProductVariantDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-
             Column::make('id'),
             Column::make('name'),
+            Column::make('variant_name'),
+            Column::make('price'),
+            Column::make('is_default'),
             Column::make('status'),
             Column::computed('action')
             ->exportable(false)
             ->printable(false)
-            ->width(300)
+            ->width(200)
             ->addClass('text-center'),
         ];
     }
@@ -101,6 +112,6 @@ class ProductVariantDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'ProductVariant_' . date('YmdHis');
+        return 'ProductVariantItem_' . date('YmdHis');
     }
 }
