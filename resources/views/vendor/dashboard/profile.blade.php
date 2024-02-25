@@ -1,4 +1,4 @@
-@extends('vendor.dashboard.layouts.master')
+@extends('vendor.layouts.master')
 
 @section('content')
   <!--=============================
@@ -7,7 +7,7 @@
   <section id="wsus__dashboard">
     <div class="container-fluid">
       
-        @include('vendor.dashboard.layouts.sidebar')
+        @include('vendor.layouts.sidebar')
 
       <div class="row">
         <div class="col-xl-9 col-xxl-10 col-lg-9 ms-auto">
@@ -44,7 +44,7 @@
                         <button class="common_btn mb-4 mt-2" type="submit">upload</button>
                     </div>
                 </form>
-                    
+              <div class="wsus_dash_pass_change mt-2"> 
                 <form action="{{route('user.profile.update.password')}}" method="POST">
                     @csrf
                     <div class="wsus__dash_pass_change mt-2">
@@ -74,7 +74,7 @@
                       </div>
                     </div>
                 </form>
-
+              </div>
 
               </div>
             </div>
