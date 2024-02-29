@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class ProductDataTable extends DataTable
+class VendorProductDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -61,15 +61,13 @@ class ProductDataTable extends DataTable
             })
             ->addColumn('status', function($query){
                 if($query->status == 1){
-                    $button = '<label class="custom-switch mt-2">
-                    <input type="checkbox" checked name="custom-switch-checkbox" data-id="' . $query->id . '" class="custom-switch-input change-status">
-                    <span class="custom-switch-indicator"></span>
-                    </label>';
+                    $button = '<div class="form-check form-switch">
+                    <input checked class="form-check-input change-status" type="checkbox" role="switch" id="flexSwitchCheckDefault" data-id="'. $query->id .'">
+                    </div>';
                 }else{
-                    $button = '<label class="custom-switch mt-2">
-                    <input type="checkbox" name="custom-switch-checkbox" data-id="' . $query->id . '" class="custom-switch-input change-status">
-                    <span class="custom-switch-indicator"></span>
-                    </label>';                    
+                    $button = '<div class="form-check form-switch">
+                    <input class="form-check-input change-status" type="checkbox" role="switch" id="flexSwitchCheckDefault" data-id="'. $query->id .'">
+                    </div>';
                 }
 
                 return $button;
@@ -92,7 +90,7 @@ class ProductDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('product-table')
+                    ->setTableId('vendorproduct-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -114,9 +112,8 @@ class ProductDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-
             Column::make('id'),
-            Column::make('image'),
+            Column::make('image')->width(150),
             Column::make('name'),
             Column::make('price'),
             Column::make('type')->width(150),
@@ -134,6 +131,6 @@ class ProductDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Product_' . date('YmdHis');
+        return 'VendorProduct_' . date('YmdHis');
     }
 }
