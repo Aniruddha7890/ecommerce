@@ -6,6 +6,7 @@ use App\DataTables\VendorProductVariantDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\ProductVariantItem;
 use Illuminate\Http\Request;
 
 use function Termwind\render;
@@ -64,7 +65,8 @@ class VendorProductVariantController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $variant = ProductVariant::findOrFail($id);
+        return view('vendor.product.product-variant.edit', compact('variant'));
     }
 
     /**
@@ -72,7 +74,19 @@ class VendorProductVariantController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'max:200'],
+            'status' => ['required']
+        ]);
+
+        $variant = ProductVariant::findOrFail($id);
+        $variant->name = $request->name;
+        $variant->status = $request->status;
+        $variant->save();
+
+        toastr('Updated Succesfully!', 'success', 'success');
+
+        return redirect()->route('vendor.products-variant.index', ['product' => $variant->product_id]);
     }
 
     /**
@@ -80,6 +94,21 @@ class VendorProductVariantController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $variant = ProductVariant::findOrFail($id);
+        $variantItemCheck = ProductVariantItem::where('product_variant_id', $variant->id)->count();
+        if($variantItemCheck > 0){
+            return response(['status' => 'error', 'message' => 'This variant contains variant items in it, delete the items first to delete this variant!']);
+        }
+        $variant->delete();
+
+        return response(['status' => 'success', 'message' => 'Deleted Succesfully!']);
+    }
+
+    public function changeStatus(Request $request){
+        $variant = ProductVariant::findOrFail($request->id);
+        $variant->status = $request->status == 'true' ? 1 : 0;
+        $variant->save();
+
+        return response(['message' => 'Status has been updated!']);
     }
 }
