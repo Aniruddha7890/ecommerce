@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use function Termwind\render;
 
@@ -19,6 +20,10 @@ class VendorProductVariantController extends Controller
     public function index(Request $request, VendorProductVariantDataTable $datatable)
     {   
         $product = Product::findOrFail($request->product);
+        /** Check Product Vendor */
+        if($product->vendor_id != Auth::user()->vendor->id){
+            abort(404);
+        }
         return $datatable->render('vendor.product.product-variant.index', compact('product'));
     }
 
@@ -66,6 +71,10 @@ class VendorProductVariantController extends Controller
     public function edit(string $id)
     {
         $variant = ProductVariant::findOrFail($id);
+        /** Check Product Vendor */
+        if($variant->product->vendor_id != Auth::user()->vendor->id){
+            abort(404);
+        }
         return view('vendor.product.product-variant.edit', compact('variant'));
     }
 
@@ -80,6 +89,10 @@ class VendorProductVariantController extends Controller
         ]);
 
         $variant = ProductVariant::findOrFail($id);
+        /** Check Product Vendor */
+        if($variant->product->vendor_id != Auth::user()->vendor->id){
+            abort(404);
+        }
         $variant->name = $request->name;
         $variant->status = $request->status;
         $variant->save();
@@ -95,6 +108,12 @@ class VendorProductVariantController extends Controller
     public function destroy(string $id)
     {
         $variant = ProductVariant::findOrFail($id);
+        
+        /** Check Product Vendor */
+        if($variant->product->vendor_id != Auth::user()->vendor->id){
+            abort(404);
+        }
+
         $variantItemCheck = ProductVariantItem::where('product_variant_id', $variant->id)->count();
         if($variantItemCheck > 0){
             return response(['status' => 'error', 'message' => 'This variant contains variant items in it, delete the items first to delete this variant!']);

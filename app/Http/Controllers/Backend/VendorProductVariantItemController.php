@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class VendorProductVariantItemController extends Controller
 {
     public function index(VendorProductVariantItemDataTable $datatable, $productId, $variantId){
-        $product = Product::findOrFail($productId);
+        $product = Product::findOrFail($productId);        
         $variant = ProductVariant::findOrFail($variantId);
         return $datatable->render('vendor.product.product-variant-item.index', compact('product', 'variant'));
     }

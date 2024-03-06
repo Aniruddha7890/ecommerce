@@ -181,8 +181,8 @@ class VendorProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
+    public function destroy(string $id) {
+
         $product = Product::findOrFail($id);
 
         if($product->vendor_id != Auth::user()->vendor->id){
@@ -215,6 +215,14 @@ class VendorProductController extends Controller
         return response(['status' => 'success', 'message' => 'Deleted Successfully!']);
     }
 
+    public function changeStatus(Request $request){
+        $product = Product::findOrFail($request->id);
+        $product->status = $request->status == 'true' ?  1 : 0;
+        $product->save();
+
+        return response(['message' => 'Status has been updated!']);
+    }
+
     public function getSubCategoreis(Request $request){
         $subCategories = SubCategory::where('category_id', $request->id)->get();
         return $subCategories;
@@ -224,4 +232,5 @@ class VendorProductController extends Controller
         $childCategories = ChildCategory::where('sub_category_id', $request->id)->get();
         return $childCategories;
     }
+
 }
