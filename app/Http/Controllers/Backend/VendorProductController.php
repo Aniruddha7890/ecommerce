@@ -8,6 +8,8 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\ChildCategory;
 use App\Models\Product;
+use App\Models\ProductImageGallery;
+use App\Models\ProductVariant;
 use App\Models\SubCategory;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
@@ -181,7 +183,36 @@ class VendorProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        if($product->vendor_id != Auth::user()->vendor->id){
+            abort(404);
+        }
+        
+        /** Delete the main product image */
+        $this->deleteImage($product->thumb_image);
+
+        /** Delete product gallery images */
+        $galleryImages = ProductImageGallery::where('product_id', $product->id)->get();
+
+        foreach($galleryImages as $image){
+            $this->deleteImage($image->image);
+            $image->delete();
+        }
+
+        /** Delete product variants and product variants items if exists */
+        $variants = ProductVariant::where('product_id', $product->id)->get();
+
+        foreach($variants as $variant){
+            /** Delete product variants items if exists */
+            $variant->productVariantItems()->delete();
+            /** Delete product variants if exists */
+            $variant->delete();
+        }
+
+        $product->delete();
+
+        return response(['status' => 'success', 'message' => 'Deleted Successfully!']);
     }
 
     public function getSubCategoreis(Request $request){
