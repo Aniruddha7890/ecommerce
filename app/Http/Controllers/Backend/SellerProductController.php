@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\DataTables\SellerPendingProductsDataTable;
 use App\DataTables\SellerProductsDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class SellerProductController extends Controller
@@ -15,5 +16,13 @@ class SellerProductController extends Controller
 
     public function pendingProducts(SellerPendingProductsDataTable $datatable){
         return $datatable->render('admin.product.seller-pending-product.index');
+    }
+
+    public function changeApproveStatus(Request $request){
+        $product = Product::findOrFail($request->id);
+        $product->is_approved = $request->value;
+        $product->save();
+
+        return response(['message' => 'Product approve status has been changed']);
     }
 }
