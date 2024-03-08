@@ -79,3 +79,4 @@ Route::put('product-variant-item-status', [ProductVariantItemController::class, 
 
 /** Seller Product routes */
 Route::get('seller-products', [SellerProductController::class, 'index'])->name('seller-products.index');
+Route::get('seller-pending-products', [SellerProductController::class, 'pendingProducts'])->name('seller-pending-products.index');
