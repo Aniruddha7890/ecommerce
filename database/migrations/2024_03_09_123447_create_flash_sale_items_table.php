@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('vendors', function (Blueprint $table) {
-            $table->string('shop_name')->nullable();
+        Schema::create('flash_sale_items', function (Blueprint $table) {
+            $table->id();
+            $table->integer('product_id');
+            $table->boolean('show_at_home');
+            $table->boolean('status');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('vendors', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('flash_sale_items');
     }
 };

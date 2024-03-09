@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('vendors', function (Blueprint $table) {
-            $table->string('shop_name')->nullable();
+        Schema::create('flash_sales', function (Blueprint $table) {
+            $table->id();
+            $table->date('end_date');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('vendors', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('flash_sales');
     }
 };
