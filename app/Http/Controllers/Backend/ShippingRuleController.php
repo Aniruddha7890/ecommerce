@@ -64,7 +64,8 @@ class ShippingRuleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $shipping = ShippingRule::findOrFail($id);
+        return view('admin.shipping-rule.edit', compact('shipping'));
     }
 
     /**
@@ -72,7 +73,25 @@ class ShippingRuleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'max:200'],
+            'type' => ['required'],
+            'min_cost' => ['nullable', 'integer'],
+            'cost' => ['required', 'integer'],
+            'status' => ['required']
+        ]);
+
+        $shipping = ShippingRule::findOrFail($id);
+        $shipping->name = $request->name;
+        $shipping->type = $request->type;
+        $shipping->min_cost = $request->min_cost;
+        $shipping->cost = $request->cost;
+        $shipping->status = $request->status;
+        $shipping->save();
+
+        toastr('Updated Successfully', 'success', 'Success');
+
+        return redirect()->route('admin.shipping-rule.index');
     }
 
     /**
@@ -80,6 +99,20 @@ class ShippingRuleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $shipping = ShippingRule::findOrFail($id);
+        $shipping->delete();
+
+        return response(['status' => 'success', 'message' => 'Successfully Deleted!']);
+    }
+
+     /**
+     * make Active or inactive method
+     */
+    public function changeStatus(Request $request){
+        $shipping = ShippingRule::findOrFail($request->id);
+        $shipping->status = $request->status == 'true' ? 1 : 0;
+        $shipping->save();
+
+        return response(['message' => 'Status has been updated!']);
     }
 }
