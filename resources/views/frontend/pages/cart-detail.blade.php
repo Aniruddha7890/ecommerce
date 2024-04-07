@@ -87,14 +87,16 @@
                                         </td>
 
                                         <td class="wsus__pro_select">
-                                            <form class="select_number">
-                                                <input class="number_area" type="text" min="1" max="100" value="1" />
-                                            </form>
+                                            <div class="product-qty-wrapper">
+                                                <button class="btn btn-danger product-decrement">-</button>
+                                                <input class="product-qty" data-rowid="{{$item->rowId}}" type="text" min="1" max="100" value="1" />
+                                                <button class="btn btn-success product-increment">+</button>
+                                            </div>
                                         </td>
 
                                         <td class="wsus__pro_icon">
                                             <a href="#"><i class="far fa-times"></i></a>
-                                        </td>
+                                        </td>   
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -157,3 +159,39 @@
     ==============================-->
 @endsection
 
+@push('scripts')
+    <script>
+    $(document).ready(function(){
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('.product-increment').on('click', function(){
+            let input = $(this).siblings('.product-qty');
+            let quantity = parseInt(input.val()) + 1;
+            let rowId = input.data('rowid'); console.log(rowId);
+            input.val(quantity);
+
+            $.ajax({
+                url: "{{route('cart.update-quantity')}}",
+                method: 'POST',
+                data: {
+                    rowId: rowId,
+                    quantity: quantity
+                },
+                success: function(data){
+                    if(data.status == 'success'){
+                        toastr.success(data.message);
+                    }
+                },
+                error: function(error){
+
+                }
+            })
+        })
+    })
+    </script>
+@endpush
