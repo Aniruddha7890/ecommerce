@@ -27,25 +27,32 @@ class CartController extends Controller
         }
         
         //check discount
-        $productTotalAmount = 0;
+        $productPrice = 0;
         if(checkDiscount($product)){
-            $productTotalAmount = ($product->offer_price + $variantTotalAmount);
+            $productPrice = $product->offer_price;
         } else{
-            $productTotalAmount = ($product->price + $variantTotalAmount);
+            $productPrice = $product->price;
         }
 
         $cartData = [];
         $cartData['id'] = $product->id;
         $cartData['name'] = $product->name;
         $cartData['qty'] = $request->qty;
-        $cartData['price'] = $productTotalAmount;
+        $cartData['price'] = $productPrice;
         $cartData['weight'] = 10;
         $cartData['options']['variants'] = $variants;
+        $cartData['options']['variants_total'] = $variantTotalAmount;
         $cartData['options']['image'] = $product->thumb_image;
         $cartData['options']['slug'] = $product->slug;
 
         Cart::add($cartData);
 
         return response(['status' => 'success', 'message' => 'Added to cart successfully!']);
+    }
+
+    /** Show Cart Page */
+    public function cartDetails(){
+        $cartItems = Cart::content();
+        return view('frontend.pages.cart-detail', compact('cartItems'));
     }
 }
