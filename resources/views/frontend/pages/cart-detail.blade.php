@@ -89,7 +89,7 @@
                                         <td class="wsus__pro_select">
                                             <div class="product-qty-wrapper">
                                                 <button class="btn btn-danger product-decrement">-</button>
-                                                <input class="product-qty" data-rowid="{{$item->rowId}}" type="text" min="1" max="100" value="1" />
+                                                <input class="product-qty" data-rowid="{{$item->rowId}}" type="text" min="1" max="100" value="{{$item->qty}}" readonly />
                                                 <button class="btn btn-success product-increment">+</button>
                                             </div>
                                         </td>
@@ -169,10 +169,43 @@
             }
         });
 
+        //incremnt product quantity
         $('.product-increment').on('click', function(){
             let input = $(this).siblings('.product-qty');
             let quantity = parseInt(input.val()) + 1;
             let rowId = input.data('rowid');
+            input.val(quantity);
+
+            $.ajax({
+                url: "{{route('cart.update-quantity')}}",
+                method: 'POST',
+                data: {
+                    rowId: rowId,
+                    quantity: quantity
+                },
+                success: function(data){
+                    if(data.status == 'success'){
+                        let productId = '#' + rowId;
+                        let totalAmount = "{{$settings->currency_icon}}" + data.product_total;
+                        $(productId).text(totalAmount);
+                        toastr.success(data.message);
+                    }
+                },
+                error: function(error){
+
+                }
+            })
+        })
+
+        //decremnt product quantity
+        $('.product-decrement').on('click', function(){
+            let input = $(this).siblings('.product-qty');
+            let quantity = parseInt(input.val()) - 1;
+            let rowId = input.data('rowid');
+
+            if(quantity < 1){
+                quantity = 1;
+            }
             input.val(quantity);
 
             $.ajax({
