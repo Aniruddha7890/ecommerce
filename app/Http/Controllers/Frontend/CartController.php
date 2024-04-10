@@ -84,4 +84,9 @@ class CartController extends Controller
 
         return redirect()->back();
     }
+
+    /** get count of products in Cart */
+    public function getCartCount(){
+        return Cart::content()->count();
+    }
 }
