@@ -89,4 +89,16 @@ class CartController extends Controller
     public function getCartCount(){
         return Cart::content()->count();
     }
+
+    /** get all cart products */
+    public function getCartProducts(){
+        return Cart::content();
+    }
+
+    /** Remove product from sidebar */
+    public function removeSidebarProduct(Request $request){
+        Cart::remove($request->rowId);
+
+        return response(['status' => 'success', 'message' => 'Product removed Successfully!']);
+    }
 }

@@ -736,6 +736,7 @@
                     url: "{{route('add-to-cart')}}",
                     success: function(data){
                         getCartCount();
+                        fetchSidebarCartProducts();
                         toastr.success(data.message);
                     },
                     error: function(error){
@@ -756,6 +757,57 @@
                     }
                 })
             }
+
+            function fetchSidebarCartProducts(){
+                $.ajax({
+                    method: 'GET',
+                    url: "{{route('cart-product')}}",
+                    success: function(data){
+                        $('.mini_cart_wrapper').html("");
+                        let html = '';
+                        for (const item in data) {
+                            let product = data[item];
+                            html += (`
+                                <li id="mini_cart_${product.rowId}">
+                                    <div class="wsus__cart_img">
+                                        <a href="{{url('product-detail')}}/${product.options.slug}"><img src="{{asset('/')}}${product.options.image}" alt="product" class="img-fluid w-100"></a>
+                                        <a class="wsis__del_icon remove_sidebar_product" data-rowid='${product.rowId}' href="#"><i class="fas fa-minus-circle"></i></a>
+                                    </div>
+                                    <div class="wsus__cart_text">
+                                        <a class="wsus__cart_title" href="{{url('product-detail')}}/${product.options.slug}">${product.name}</a>
+                                        <p>{{$settings->currency_icon}}${product.price}</p>
+                                    </div>
+                                </li>
+                            `)
+                        }
+                        $('.mini_cart_wrapper').html(html);
+                    },
+                    error: function(error){
+                        
+                    }
+                })
+            }
+
+            $('body').on('click', '.remove_sidebar_product', function(e){
+                e.preventDefault();
+                let rowId = $(this).data('rowid');
+                $.ajax({
+                    method: 'POST',
+                    url: "{{route('cart.remove-sidebar-product')}}",
+                    data: {
+                        rowId: rowId
+                    },
+                    success: function(data){
+                        let productId = '#mini_cart_' + rowId;
+                        $(productId).remove();
+                        getCartCount();
+                        toastr.success(data.message);
+                    },
+                    error: function(error){
+                        
+                    }
+                })
+            })
         })
     </script>
 @endpush
