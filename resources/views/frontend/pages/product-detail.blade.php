@@ -737,6 +737,7 @@
                     success: function(data){
                         getCartCount();
                         fetchSidebarCartProducts();
+                        $('.mini-cart-actions').removeClass('d-none');
                         toastr.success(data.message);
                     },
                     error: function(error){
@@ -776,11 +777,15 @@
                                     <div class="wsus__cart_text">
                                         <a class="wsus__cart_title" href="{{url('product-detail')}}/${product.options.slug}">${product.name}</a>
                                         <p>{{$settings->currency_icon}}${product.price}</p>
+                                        <small>Variants total: {{$settings->currency_icon}}${product.options.variants_total}</small>
+                                        <br>
+                                        <small>Qty: ${product.qty}</small>
                                     </div>
                                 </li>
                             `)
                         }
                         $('.mini_cart_wrapper').html(html);
+                        getSidebarCartSubtotal();
                     },
                     error: function(error){
                         
@@ -788,6 +793,7 @@
                 })
             }
 
+            // remove product from sidebar
             $('body').on('click', '.remove_sidebar_product', function(e){
                 e.preventDefault();
                 let rowId = $(this).data('rowid');
@@ -800,7 +806,12 @@
                     success: function(data){
                         let productId = '#mini_cart_' + rowId;
                         $(productId).remove();
-                        getCartCount();
+                        getSidebarCartSubtotal();
+                        // getCartCount();
+                        if($('.mini_cart_wrapper').find('li').length == 0){
+                            $('.mini-cart-actions').addClass('d-none');
+                            $('.mini_cart_wrapper').html('<li class="text-center">Cart is Empty!</li>');
+                        }
                         toastr.success(data.message);
                     },
                     error: function(error){
@@ -808,6 +819,20 @@
                     }
                 })
             })
+
+            // get sidebar subtotal
+            function getSidebarCartSubtotal(){
+                $.ajax({
+                    method: 'GET',
+                    url: "{{route('cart.sidebar-product-total')}}",
+                    success: function(data){
+                        $('#mini_cart_subtotal').text("{{$settings->currency_icon}}" + data)
+                    },
+                    error: function(error){
+                        
+                    }
+                })
+            }
         })
     </script>
 @endpush
