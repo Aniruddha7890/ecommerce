@@ -16,10 +16,14 @@
                 data: formData,
                 url: "{{ route('add-to-cart') }}",
                 success: function(data) {
-                    getCartCount();
-                    fetchSidebarCartProducts();
-                    $('.mini-cart-actions').removeClass('d-none');
-                    toastr.success(data.message);
+                    if(data.status == 'success'){
+                        getCartCount();
+                        fetchSidebarCartProducts();
+                        $('.mini-cart-actions').removeClass('d-none');
+                        toastr.success(data.message);
+                    } else if(data.status == 'error'){
+                        toastr.error(data.message);
+                    }                    
                 },
                 error: function(error) {
 

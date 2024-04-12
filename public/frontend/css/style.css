@@ -3477,6 +3477,17 @@ PRODUCT DETAILS START
   margin-right: 5px;
 }
 
+.wsus__stock_area .stock_out {
+  background: #ec3d11;
+  color: #fff;
+  text-transform: capitalize;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 2px;
+  margin-right: 5px;
+}
+
 .wsus__pro_details_text .brand_model {
   display: inline-block;
   margin-right: 20px;

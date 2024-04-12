@@ -732,6 +732,12 @@
 	margin-left: 5px;
 }
 
+.wsus__stock_area .stock_out {
+	margin-right: 0;
+	float: right;
+	margin-left: 5px;
+}
+
 .wsus__stock_area {
 	display: flex;
 	align-items: center;
