@@ -115,7 +115,7 @@
                 <div class="col-xl-3">
                     <div class="wsus__cart_list_footer_button" id="sticky_sidebar">
                         <h6>total cart</h6>
-                        <p>subtotal: <span>$124.00</span></p>
+                        <p>subtotal: <span id="sub_total">{{$settings->currency_icon}}{{getCartTotal()}}</span></p>
                         <p>delivery: <span>$00.00</span></p>
                         <p>discount: <span>$10.00</span></p>
                         <p class="total"><span>total:</span> <span>$134.00</span></p>
@@ -177,7 +177,7 @@
             }
         });
 
-        //incremnt product quantity
+        //increment product quantity
         $('.product-increment').on('click', function(){
             let input = $(this).siblings('.product-qty');
             let quantity = parseInt(input.val()) + 1;
@@ -196,6 +196,7 @@
                         let productId = '#' + rowId;
                         let totalAmount = "{{$settings->currency_icon}}" + data.product_total;
                         $(productId).text(totalAmount);
+                        renderCartSubTotal();
                         toastr.success(data.message);
                     } else if(data.status == 'error'){
                         toastr.error(data.message);
@@ -207,7 +208,7 @@
             })
         })
 
-        //decremnt product quantity
+        //decrement product quantity
         $('.product-decrement').on('click', function(){
             let input = $(this).siblings('.product-qty');
             let quantity = parseInt(input.val()) - 1;
@@ -230,6 +231,7 @@
                         let productId = '#' + rowId;
                         let totalAmount = "{{$settings->currency_icon}}" + data.product_total;
                         $(productId).text(totalAmount);
+                        renderCartSubTotal();
                         toastr.success(data.message);
                     } else if(data.status == 'error'){
                         toastr.error(data.message);
@@ -273,6 +275,20 @@
                     }
                 });
         })
+
+        //fetch sub total and put it on dom
+        function renderCartSubTotal(){
+            $.ajax({
+                method: 'GET',
+                url: "{{ route('cart.sidebar-product-total') }}",
+                success: function(data) {
+                    $("#sub_total").text("{{$settings->currency_icon}}" + data);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            })
+        }
 
     })
     </script>
