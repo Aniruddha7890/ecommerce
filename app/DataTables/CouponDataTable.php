@@ -89,6 +89,7 @@ class CouponDataTable extends DataTable
         return [            
             Column::make('id'),
             Column::make('name'),
+            Column::make('code'),
             Column::make('discount_type'),
             Column::make('discount'),
             Column::make('start_date'),

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\ProductVariantItem;
 use Illuminate\Http\Request;
@@ -72,7 +73,6 @@ class CartController extends Controller
 
     /** Update Product Qantity */
     public function updateProductQty(Request $request){
-
         $productId = Cart::get($request->rowId)->id;
         $product = Product::findOrFail($productId);
         //check product quantity
@@ -134,5 +134,23 @@ class CartController extends Controller
         Cart::remove($request->rowId);
 
         return response(['status' => 'success', 'message' => 'Product removed Successfully!']);
+    }
+
+    /** Apply coupon */
+    public function applyCoupon(Request $request){
+        if($request->coupon_code == null){
+            return response(['status' => 'error', 'message' => 'Coupon field is required!']);
+        }
+
+        $coupon = Coupon::where(['code' => $request->coupon_code, 'status' => 1])->first();
+        
+        if($coupon == null){
+            return response(['status' => 'error', 'message' => 'Coupon not exist!']);
+        } else if($coupon->start_date > date('Y-m-d')){
+            return response(['status' => 'error', 'message' => 'Coupon not exist!']);
+        } else if($coupon->end_date < date('Y-m-d')){
+            return response(['status' => 'error', 'message' => 'Coupon is expired!']);
+        }
+
     }
 }
