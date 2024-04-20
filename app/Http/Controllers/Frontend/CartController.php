@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\ProductVariantItem;
 use Illuminate\Http\Request;
 use Cart;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
@@ -150,7 +151,26 @@ class CartController extends Controller
             return response(['status' => 'error', 'message' => 'Coupon not exist!']);
         } else if($coupon->end_date < date('Y-m-d')){
             return response(['status' => 'error', 'message' => 'Coupon is expired!']);
+        } else if($coupon->total_used >= $coupon->quantity){
+            return response(['status' => 'error', 'message' => 'You can not use this coupon!']);
         }
 
+        if($coupon->discount_type == 'amount'){
+            Session::put('coupon', [
+                'coupon_name' => $coupon->name,
+                'coupon_code' => $coupon->code,
+                'discount_type' => 'amount',
+                'discount' => $coupon->discount
+            ]);
+        } else if($coupon->discount_type == 'percent'){
+            Session::put('coupon', [
+                'coupon_name' => $coupon->name,
+                'coupon_code' => $coupon->code,
+                'discount_type' => 'percent',
+                'discount' => $coupon->discount
+            ]);
+        }
+
+        return response(['status' => 'success', 'message' => 'Coupon applied successfully!']);
     }
 }
