@@ -1,7 +1,8 @@
 <?php
 
-/** Set Sidebar Item Active */
+use Illuminate\Support\Facades\Session;
 
+/** Set Sidebar Item Active */
 function setActive(array $route){
     if(is_array($route)){
         foreach($route as $r){
@@ -13,7 +14,6 @@ function setActive(array $route){
 }
 
 /** Check if producct has discount */
-
 function checkDiscount($product){
     $currentDate = date('Y-m-d');
 
@@ -25,7 +25,6 @@ function checkDiscount($product){
 }
 
 /** Calculate discount percent */
-
 function calculateDiscountPercent($originalPrice, $discountPrice){
     $discountAmmount = $originalPrice - $discountPrice;
     $discountPercent = ($discountAmmount / $originalPrice) * 100;
@@ -34,7 +33,6 @@ function calculateDiscountPercent($originalPrice, $discountPrice){
 }
 
 /** Check the product type */
-
 function productType(string $type)
 {
     switch ($type) {
@@ -57,11 +55,44 @@ function productType(string $type)
 }
 
 /** Get total cart amount */
-
 function getCartTotal(){
     $total = 0;
     foreach (\Cart::content() as $product) {
         $total += ($product->price + $product->options->variants_total) * $product->qty;
     }
     return $total;
+}
+
+/** Get payable total amount */
+function getMainCartTotal(){
+    if(Session::has('coupon')){
+        $coupon = Session::get('coupon');
+        $subTotal = getCartTotal();
+        if($coupon['discount_type'] == 'amount'){
+            $total = $subTotal - $coupon['discount'];
+            return $total;
+        } else if($coupon['discount_type'] == 'percent'){
+            $discount = $subTotal - ($subTotal * $coupon['discount'] / 100);
+            $total = $subTotal - $discount;
+            return $total;
+        }
+    } else{
+        return getCartTotal();
+    }
+}
+
+/** Get cart discount */
+function getCartDiscount(){
+    if(Session::has('coupon')){
+        $coupon = Session::get('coupon');
+        $subTotal = getCartTotal();
+        if($coupon['discount_type'] == 'amount'){
+            return $coupon['discount'];
+        } else if($coupon['discount_type'] == 'percent'){
+            $discount = $subTotal - ($subTotal * $coupon['discount'] / 100);
+            return $discount;
+        }
+    } else{
+        return 0;
+    }
 }

@@ -1,13 +1,13 @@
 @extends('frontend.layouts.master')
 
 @section('title')
-{{$settings->site_name}} || Cart Details
+    {{ $settings->site_name }} || Cart Details
 @endsection
 
 @section('content')
     <!--============================
-        BREADCRUMB START
-    ==============================-->
+            BREADCRUMB START
+        ==============================-->
     <section id="wsus__breadcrumb">
         <div class="wsus_breadcrumb_overlay">
             <div class="container">
@@ -25,13 +25,13 @@
         </div>
     </section>
     <!--============================
-        BREADCRUMB END
-    ==============================-->
+            BREADCRUMB END
+        ==============================-->
 
 
     <!--============================
-        CART VIEW PAGE START
-    ==============================-->
+            CART VIEW PAGE START
+        ==============================-->
     <section id="wsus__cart_view">
         <div class="container">
             <div class="row">
@@ -66,38 +66,44 @@
                                         </th>
                                     </tr>
                                     @foreach ($cartItems as $item)
-                                    <tr class="d-flex">
-                                        <td class="wsus__pro_img"><img src="{{asset($item->options->image)}}" alt="product"
-                                                class="img-fluid w-100">
-                                        </td>
+                                        <tr class="d-flex">
+                                            <td class="wsus__pro_img"><img src="{{ asset($item->options->image) }}"
+                                                    alt="product" class="img-fluid w-100">
+                                            </td>
 
-                                        <td class="wsus__pro_name">
-                                            <p>{!! $item->name !!}</p>
-                                            @foreach ($item->options->variants as $key => $variant)                                              
-                                            <span>{{$key}}: {{$variant['name']}} ({{$settings->currency_icon.$variant['price']}})</span>
-                                            @endforeach
-                                        </td>
+                                            <td class="wsus__pro_name">
+                                                <p>{!! $item->name !!}</p>
+                                                @foreach ($item->options->variants as $key => $variant)
+                                                    <span>{{ $key }}: {{ $variant['name'] }}
+                                                        ({{ $settings->currency_icon . $variant['price'] }})</span>
+                                                @endforeach
+                                            </td>
 
-                                        <td class="wsus__pro_tk">
-                                            <h6>{{$settings->currency_icon.$item->price}}</h6>
-                                        </td>
+                                            <td class="wsus__pro_tk">
+                                                <h6>{{ $settings->currency_icon . $item->price }}</h6>
+                                            </td>
 
-                                        <td class="wsus__pro_tk">
-                                            <h6 id="{{$item->rowId}}">{{$settings->currency_icon.($item->price + $item->options->variants_total) * $item->qty}}</h6>
-                                        </td>
+                                            <td class="wsus__pro_tk">
+                                                <h6 id="{{ $item->rowId }}">
+                                                    {{ $settings->currency_icon . ($item->price + $item->options->variants_total) * $item->qty }}
+                                                </h6>
+                                            </td>
 
-                                        <td class="wsus__pro_select">
-                                            <div class="product-qty-wrapper">
-                                                <button class="btn btn-danger product-decrement">-</button>
-                                                <input class="product-qty" data-rowid="{{$item->rowId}}" type="text" min="1" max="100" value="{{$item->qty}}" readonly />
-                                                <button class="btn btn-success product-increment">+</button>
-                                            </div>
-                                        </td>
+                                            <td class="wsus__pro_select">
+                                                <div class="product-qty-wrapper">
+                                                    <button class="btn btn-danger product-decrement">-</button>
+                                                    <input class="product-qty" data-rowid="{{ $item->rowId }}"
+                                                        type="text" min="1" max="100"
+                                                        value="{{ $item->qty }}" readonly />
+                                                    <button class="btn btn-success product-increment">+</button>
+                                                </div>
+                                            </td>
 
-                                        <td class="wsus__pro_icon">
-                                            <a href="{{route('cart.remove-product', $item->rowId)}}"><i class="far fa-times"></i></a>
-                                        </td>   
-                                    </tr>
+                                            <td class="wsus__pro_icon">
+                                                <a href="{{ route('cart.remove-product', $item->rowId) }}"><i
+                                                        class="far fa-times"></i></a>
+                                            </td>
+                                        </tr>
                                     @endforeach
 
                                     @if (count($cartItems) == 0)
@@ -115,18 +121,17 @@
                 <div class="col-xl-3">
                     <div class="wsus__cart_list_footer_button" id="sticky_sidebar">
                         <h6>total cart</h6>
-                        <p>subtotal: <span id="sub_total">{{$settings->currency_icon}}{{getCartTotal()}}</span></p>
-                        <p>delivery: <span>$00.00</span></p>
-                        <p>discount: <span>$10.00</span></p>
-                        <p class="total"><span>total:</span> <span>$134.00</span></p>
+                        <p>subtotal: <span id="sub_total">{{ $settings->currency_icon }}{{ getCartTotal() }}</span></p>
+                        <p>Coupon(-): <span id="discount">{{$settings->currency_icon}}{{getCartDiscount()}}</span></p>
+                        <p class="total"><span>total:</span> <span id="cart_total">{{$settings->currency_icon}}{{getMainCartTotal()}}</span></p>
 
                         <form id="coupon_form">
-                            <input type="text" placeholder="Coupon Code" name="coupon_code">
+                            <input type="text" placeholder="Coupon Code" name="coupon_code" value="{{session()->has('coupon') ? session()->get('coupon')['coupon_code'] : ''}}">
                             <button type="submit" class="common_btn">apply</button>
                         </form>
                         <a class="common_btn mt-4 w-100 text-center" href="check_out.html">checkout</a>
-                        <a class="common_btn mt-1 w-100 text-center" href="product_grid_view.html"><i
-                                class="fab fa-shopify"></i> go shop</a>
+                        <a class="common_btn mt-1 w-100 text-center" href="{{route('home')}}"><i
+                                class="fab fa-shopify"></i> Keep shopping</a>
                     </div>
                 </div>
             </div>
@@ -163,91 +168,95 @@
         </div>
     </section>
     <!--============================
-          CART VIEW PAGE END
-    ==============================-->
+              CART VIEW PAGE END
+        ==============================-->
 @endsection
 
 @push('scripts')
     <script>
-    $(document).ready(function(){
+        $(document).ready(function() {
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        //increment product quantity
-        $('.product-increment').on('click', function(){
-            let input = $(this).siblings('.product-qty');
-            let quantity = parseInt(input.val()) + 1;
-            let rowId = input.data('rowid');
-            input.val(quantity);
-
-            $.ajax({
-                url: "{{route('cart.update-quantity')}}",
-                method: 'POST',
-                data: {
-                    rowId: rowId,
-                    quantity: quantity
-                },
-                success: function(data){
-                    if(data.status == 'success'){
-                        let productId = '#' + rowId;
-                        let totalAmount = "{{$settings->currency_icon}}" + data.product_total;
-                        $(productId).text(totalAmount);
-                        renderCartSubTotal();
-                        toastr.success(data.message);
-                    } else if(data.status == 'error'){
-                        toastr.error(data.message);
-                    }
-                },
-                error: function(error){
-
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            })
-        })
+            });
 
-        //decrement product quantity
-        $('.product-decrement').on('click', function(){
-            let input = $(this).siblings('.product-qty');
-            let quantity = parseInt(input.val()) - 1;
-            let rowId = input.data('rowid');
+            //increment product quantity
+            $('.product-increment').on('click', function() {
+                let input = $(this).siblings('.product-qty');
+                let quantity = parseInt(input.val()) + 1;
+                let rowId = input.data('rowid');
+                input.val(quantity);
 
-            if(quantity < 1){
-                quantity = 1;
-            }
-            input.val(quantity);
+                $.ajax({
+                    url: "{{ route('cart.update-quantity') }}",
+                    method: 'POST',
+                    data: {
+                        rowId: rowId,
+                        quantity: quantity
+                    },
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            let productId = '#' + rowId;
+                            let totalAmount = "{{ $settings->currency_icon }}" + data
+                                .product_total;
+                            $(productId).text(totalAmount);
+                            renderCartSubTotal();
+                            calculateCouponDiscount();
+                            toastr.success(data.message);
+                        } else if (data.status == 'error') {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function(error) {
 
-            $.ajax({
-                url: "{{route('cart.update-quantity')}}",
-                method: 'POST',
-                data: {
-                    rowId: rowId,
-                    quantity: quantity
-                },
-                success: function(data){
-                    if(data.status == 'success'){
-                        let productId = '#' + rowId;
-                        let totalAmount = "{{$settings->currency_icon}}" + data.product_total;
-                        $(productId).text(totalAmount);
-                        renderCartSubTotal();
-                        toastr.success(data.message);
-                    } else if(data.status == 'error'){
-                        toastr.error(data.message);
                     }
-                },
-                error: function(error){
-
-                }
+                })
             })
-        })
 
-        //clear cart
-        $('.clear-cart').on('click', function(e){
-            e.preventDefault();
-            
-            Swal.fire({
+            //decrement product quantity
+            $('.product-decrement').on('click', function() {
+                let input = $(this).siblings('.product-qty');
+                let quantity = parseInt(input.val()) - 1;
+                let rowId = input.data('rowid');
+
+                if (quantity < 1) {
+                    quantity = 1;
+                }
+                input.val(quantity);
+
+                $.ajax({
+                    url: "{{ route('cart.update-quantity') }}",
+                    method: 'POST',
+                    data: {
+                        rowId: rowId,
+                        quantity: quantity
+                    },
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            let productId = '#' + rowId;
+                            let totalAmount = "{{ $settings->currency_icon }}" + data
+                                .product_total;
+                            $(productId).text(totalAmount);
+                            renderCartSubTotal();
+                            calculateCouponDiscount();
+                            toastr.success(data.message);
+                        } else if (data.status == 'error') {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function(error) {
+
+                    }
+                })
+            })
+
+            //clear cart
+            $('.clear-cart').on('click', function(e) {
+                e.preventDefault();
+
+                Swal.fire({
                     title: "Are you sure?",
                     text: "This action will clear your cart!",
                     icon: "warning",
@@ -260,10 +269,10 @@
 
                         $.ajax({
                             type: 'GET',
-                            url: "{{route('clear.cart')}}",
+                            url: "{{ route('clear.cart') }}",
 
                             success: function(data) {
-                                if(data.status == 'success'){
+                                if (data.status == 'success') {
                                     window.location.reload();
                                 }
                             },
@@ -274,43 +283,61 @@
                         })
                     }
                 });
-        })
-
-        //fetch sub total and put it on dom
-        function renderCartSubTotal(){
-            $.ajax({
-                method: 'GET',
-                url: "{{ route('cart.sidebar-product-total') }}",
-                success: function(data) {
-                    $("#sub_total").text("{{$settings->currency_icon}}" + data);
-                },
-                error: function(error) {
-                    console.log(error);
-                }
             })
-        }
 
-        //apply coupon 
-        $('#coupon_form').on('submit', function(e){
-            e.preventDefault();
-            let formdata = $(this).serialize();
-            $.ajax({
-                method: 'GET',
-                url: "{{ route('apply-coupon') }}",
-                data: formdata,
-                success: function(data) {
-                    if(data.status == 'error'){
-                        toastr.error(data.message);
-                    } else if(data.status == 'success'){
-                        toastr.success(data.message);
+            //fetch sub total and put it on dom
+            function renderCartSubTotal() {
+                $.ajax({
+                    method: 'GET',
+                    url: "{{ route('cart.sidebar-product-total') }}",
+                    success: function(data) {
+                        $("#sub_total").text("{{ $settings->currency_icon }}" + data);
+                    },
+                    error: function(error) {
+                        console.log(error);
                     }
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            })
-        })
+                })
+            }
 
-    })
+            //apply coupon 
+            $('#coupon_form').on('submit', function(e) {
+                e.preventDefault();
+                let formdata = $(this).serialize();
+                $.ajax({
+                    method: 'GET',
+                    url: "{{ route('apply-coupon') }}",
+                    data: formdata,
+                    success: function(data) {
+                        if (data.status == 'error') {
+                            toastr.error(data.message);
+                        } else if (data.status == 'success') {
+                            calculateCouponDiscount();
+                            toastr.success(data.message);
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                })
+            })
+
+            //calculate discount amount 
+            function calculateCouponDiscount() {
+                $.ajax({
+                    method: 'GET',
+                    url: "{{ route('coupon-calculation') }}",
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            $('#discount').text('{{ $settings->currency_icon }}' + data.discount);
+                            $('#cart_total').text('{{ $settings->currency_icon }}' + data.cart_total);
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+        })
     </script>
 @endpush

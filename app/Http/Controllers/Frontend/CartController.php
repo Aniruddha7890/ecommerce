@@ -17,6 +17,7 @@ class CartController extends Controller
         $cartItems = Cart::content();
 
         if(count($cartItems) == 0){
+            Session::forget('coupon');
             toastr('Please add some product in your cart to see the cart page', 'warning', 'Cart is Empty!');
             return redirect()->route('home');
         }
@@ -172,5 +173,24 @@ class CartController extends Controller
         }
 
         return response(['status' => 'success', 'message' => 'Coupon applied successfully!']);
+    }
+
+    /** calculate coupon discount */
+    public function couponCalculation(){
+        if(Session::has('coupon')){
+            $coupon = Session::get('coupon');
+            $subTotal = getCartTotal();
+            if($coupon['discount_type'] == 'amount'){
+                $total = $subTotal - $coupon['discount'];
+                return response(['status' => 'success', 'cart_total' => $total, 'discount' => $coupon['discount']]);
+            } else if($coupon['discount_type'] == 'percent'){
+                $discount = $subTotal - ($subTotal * $coupon['discount'] / 100);
+                $total = $subTotal - $discount;
+                return response(['status' => 'success', 'cart_total' => $total, 'discount' => $discount]);
+            }
+        } else{
+            $total = getCartTotal();
+            return response(['status' => 'success', 'cart_total' => $total, 'discount' => 0]);
+        }
     }
 }
