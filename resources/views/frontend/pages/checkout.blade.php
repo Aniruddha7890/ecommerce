@@ -69,27 +69,33 @@
                     <div class="col-xl-4 col-lg-5">
                         <div class="wsus__order_details" id="sticky_sidebar">
                             <p class="wsus__product">shipping Methods</p>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
-                                    value="option1" checked>
-                                <label class="form-check-label" for="exampleRadios1">
-                                    free shipping
-                                    <span>(10 - 12 days)</span>
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
-                                    value="option2">
-                                <label class="form-check-label" for="exampleRadios2">
-                                    express shipping
-                                    <span>(5 - 10 days)</span>
-                                </label>
-                            </div>
+                            @foreach ($shippingMethods as $method)
+                            @if ($method->type == 'min_cost' && getCartTotal() >= $method->min_cost)
+                                <div class="form-check">
+                                    <input class="form-check-input shipping_method" type="radio" name="exampleRadios" id="exampleRadios1"
+                                        value="{{$method->id}}" data-cost="{{$method->cost}}">
+                                    <label class="form-check-label" for="exampleRadios1">
+                                        {{$method->name}}
+                                        <span>cost: ({{$settings->currency_icon}}{{$method->cost}})</span>
+                                    </label>
+                                </div> 
+                            @elseif ($method->type == 'flat_cost')
+                                <div class="form-check">
+                                    <input class="form-check-input shipping_method" type="radio" name="exampleRadios" id="exampleRadios1"
+                                        value="{{$method->id}}" data-cost="{{$method->cost}}">
+                                    <label class="form-check-label" for="exampleRadios1">
+                                        {{$method->name}}
+                                        <span>cost: ({{$settings->currency_icon}}{{$method->cost}})</span>
+                                    </label>
+                                </div>  
+                            @endif                                
+                            @endforeach                           
+
                             <div class="wsus__order_details_summery">
-                                <p>subtotal: <span>$120.00</span></p>
-                                <p>shipping fee: <span>$20.00</span></p>
-                                <p>tax: <span>$00.00</span></p>
-                                <p><b>total:</b> <span><b>$140.00</b></span></p>
+                                <p>subtotal: <span>{{$settings->currency_icon}}{{getCartTotal()}}</span></p>
+                                <p>shipping fee(+): <span id="shipping_fee">{{$settings->currency_icon}}0</span></p>
+                                <p>coupon(-): <span>{{$settings->currency_icon}}{{getCartDiscount()}}</span></p>
+                                <p><b>total:</b> <span><b id="total_amount" data-total-amount="{{getMainCartTotal()}}">{{$settings->currency_icon}}{{getMainCartTotal()}}</b></span></p>
                             </div>
                             <div class="terms_area">
                                 <div class="form-check">
@@ -100,6 +106,10 @@
                                     </label>
                                 </div>
                             </div>
+                            <form action="" id="checkOutForm">
+                                <input type="hidden" name="shipping_method_id" id="shipping_method_id">
+                                <input type="hidden" name="shipping_address_id">
+                            </form>
                             <a href="payment.html" class="common_btn">Place Order</a>
                         </div>
                     </div>
@@ -183,3 +193,21 @@
                 CHECK OUT PAGE END
             ==============================-->
 @endsection
+
+@push('scripts')
+
+<script>
+    $(document).ready(function(){
+        $('.shipping_method').on('click', function(){
+            let shippingFee = $(this).data('cost');
+            let curentTotalAmout = $('#total_amount').data('total-amount')
+            let totalAmount = curentTotalAmout + shippingFee;
+
+            $('#shipping_method_id').val($(this).val());
+            $('#shipping_fee').text('{{$settings->currency_icon}}' + shippingFee);            
+            $('#total_amount').text('{{$settings->currency_icon}}' + totalAmount);
+        })
+    })
+</script>
+    
+@endpush
