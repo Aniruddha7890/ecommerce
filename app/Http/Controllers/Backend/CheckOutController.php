@@ -11,13 +11,15 @@ use Illuminate\Support\Facades\Session;
 
 class CheckOutController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $addresses = UserAddress::where('user_id', Auth::user()->id)->get();
         $shippingMethods = ShippingRule::where('status', 1)->get();
         return view('frontend.pages.checkout', compact('addresses', 'shippingMethods'));
     }
 
-    public function createAddress(Request $request){
+    public function createAddress(Request $request)
+    {
         $request->validate([
             'name' => ['required', 'max:200'],
             'phone' => ['required', 'max:20'],
@@ -45,23 +47,31 @@ class CheckOutController extends Controller
         return redirect()->back();
     }
 
-    public function checkOutFormSubmit(Request $request){
+    public function checkOutFormSubmit(Request $request)
+    {
         $request->validate([
             'shipping_method_id' => ['required', 'integer'],
-            'shipping_address_id' => ['required', 'integer'] 
+            'shipping_address_id' => ['required', 'integer']
         ]);
 
         $shippingMethod = ShippingRule::findOrFail($request->shipping_method_id);
-        Session::put('shipping_method',[
-                'id' => $shippingMethod->id,
-                'name' => $shippingMethod->name,
-                'type' => $shippingMethod->type,
-                'cost' => $shippingMethod->cost,
-            ]
-        );
-        $shippingAddress = UserAddress::findOrFail($request->shipping_address_id)->toArray();
-        Session::put('shipping_address', $shippingAddress);
+        if ($shippingMethod) {
+            Session::put(
+                'shipping_method',
+                [
+                    'id' => $shippingMethod->id,
+                    'name' => $shippingMethod->name,
+                    'type' => $shippingMethod->type,
+                    'cost' => $shippingMethod->cost,
+                ]
+            );
+        }
 
-        return response(['status' => 'success']);
+        $shippingAddress = UserAddress::findOrFail($request->shipping_address_id)->toArray();
+        if ($shippingMethod) {
+            Session::put('shipping_address', $shippingAddress);
+        }
+
+        return response(['status' => 'success', 'redirect_url' => route('user.payment')]);
     }
 }

@@ -250,7 +250,7 @@
                         if(data.status === 'success'){
                             $('#submitCheckoutForm').text('Place Order')
                             // redirect user to next page
-                            // window.location.href = data.redirect_url;
+                            window.location.href = data.redirect_url;
                         }
                     },
                     error: function(data){
