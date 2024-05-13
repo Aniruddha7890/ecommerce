@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\PaypalSetting;
 use App\Models\Product;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -23,11 +24,13 @@ class PaymentController extends Controller
         return view('frontend.pages.payment');
     }
 
-    public function paymentSuccess(){
+    public function paymentSuccess()
+    {
         return view('frontend.pages.payment-success');
     }
 
-    public function storeOrder($paymentMethod, $paymentStatus){
+    public function storeOrder($paymentMethod, $paymentStatus, $transactionId, $paidAmount, $paidCurrrencyName)
+    {
         $setting = GeneralSetting::first();
 
         $order = new Order();
@@ -40,14 +43,14 @@ class PaymentController extends Controller
         $order->product_qty = \Cart::content()->count();
         $order->payment_method = $paymentMethod;
         $order->payment_status = $paymentStatus;
-        $order->order_address = json_encode(Session::key('shipping_address'));
-        $order->shipping_method = json_encode(Session::key('shipping_method'));
-        $order->coupon = json_encode(Session::key('coupon'));
+        $order->order_address = json_encode(Session::get('shipping_address'));
+        $order->shipping_method = json_encode(Session::get('shipping_method'));
+        $order->coupon = json_encode(Session::get('coupon'));
         $order->order_status = 0;
         $order->save();
 
         // store order product
-        foreach(\Cart::content() as $item){
+        foreach (\Cart::content() as $item) {
             $product = Product::findOrFail($item->id);
 
             $orderProduct = new OrderProduct();
@@ -63,7 +66,21 @@ class PaymentController extends Controller
         }
 
         // store transaction details
-        
+        $transaction = new Transaction();
+        $transaction->order_id = $order->id;
+        $transaction->transaction_id = $transactionId;
+        $transaction->payment_method = $paymentMethod;
+        $transaction->amount = getFinalPayableAmount();
+        $transaction->amount_real_currency = $paidAmount;
+        $transaction->amount_real_currency_name = $paidCurrrencyName;
+        $transaction->save();
+    }
+
+    public function clearSession(){
+        \Cart::destroy();
+        Session::forget('shipping_address');
+        Session::forget('shipping_method');
+        Session::forget('coupon');
     }
 
     public function paypalConfig()
@@ -119,32 +136,45 @@ class PaymentController extends Controller
             ]
         ]);
 
-        if(isset($response['id']) && $response['id'] != null){
-            foreach($response['links'] as $link){
-                if($link['rel'] == 'approve'){
+        if (isset($response['id']) && $response['id'] != null) {
+            foreach ($response['links'] as $link) {
+                if ($link['rel'] == 'approve') {
                     return redirect()->away($link['href']);
                 }
             }
-        } else{
+        } else {
             return redirect()->route('user.paypal.cancel');
         }
     }
 
-    public function paypalSuccess(Request $request){
+    public function paypalSuccess(Request $request)
+    {
         $config = $this->paypalConfig();
         $provider = new PayPalClient($config);
         $provider->getAccessToken();
 
         $response = $provider->capturePaymentOrder($request->token);
 
-        if(isset($response['status']) && $response['status'] == 'COMPLETED'){
+        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+
+            // calculate payable amount depending on currency rate
+            $paypalSetting = PaypalSetting::first();
+            $total = getFinalPayableAmount();
+            $paidAmount = round($total * $paypalSetting->currency_rate, 2);
+
+            $this->storeOrder('paypal', 1, $response['id'], $paidAmount, $paypalSetting->currency_name);
+
+            //clear session
+            $this->clearSession();
+
             return redirect()->route('user.payment.success');
-        } else{
+        } else {
             return redirect()->route('user.paypal.cancel');
         }
     }
 
-    public function paypalCancel(){
+    public function paypalCancel()
+    {
         toastr('Something went wrong, try again later!', 'error', 'Payment Failed!');
         return redirect()->route('user.payment');
     }
