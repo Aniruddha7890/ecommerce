@@ -8,11 +8,14 @@ use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\PaypalSetting;
 use App\Models\Product;
+use App\Models\StripeSetting;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
+use Stripe\Charge;
+use Stripe\Stripe;
 
 class PaymentController extends Controller
 {
@@ -76,7 +79,8 @@ class PaymentController extends Controller
         $transaction->save();
     }
 
-    public function clearSession(){
+    public function clearSession()
+    {
         \Cart::destroy();
         Session::forget('shipping_address');
         Session::forget('shipping_method');
@@ -108,6 +112,8 @@ class PaymentController extends Controller
 
         return $config;
     }
+
+    /** Paypal redirect */
 
     public function payWithPaypal()
     {
@@ -177,5 +183,26 @@ class PaymentController extends Controller
     {
         toastr('Something went wrong, try again later!', 'error', 'Payment Failed!');
         return redirect()->route('user.payment');
+    }
+
+    /** Stripe payment */
+
+    public function payWithStripe(Request $request)
+    {
+
+        // calculate payable amount depending on currency rate
+        $stripeSetting = StripeSetting::first();
+        $total = getFinalPayableAmount();
+        $payableAmount = round($total * $stripeSetting->currency_rate, 2);
+
+        Stripe::setApiKey($stripeSetting->secret_key);
+        Charge::create([
+            "amount" => $payableAmount * 100,
+            "currency" => $stripeSetting->currency_name,
+            "source" => $request->stripe_token,
+            "description" => "Product Purchase!"
+        ]);
+
+        dd("Success");
     }
 }
