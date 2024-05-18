@@ -81,4 +81,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'user', 'as' => 
 
     /** Stripe routes */
     Route::post('stripe/payment', [PaymentController::class, 'payWithStripe'])->name('stripe.payment');
+
+    /** Razorpay routes */
+    Route::post('razorpay/payment', [PaymentController::class, 'payWithRazorpay'])->name('razorpay.payment');
 });

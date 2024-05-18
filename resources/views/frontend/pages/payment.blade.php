@@ -119,17 +119,7 @@
 
                             @include('frontend.pages.payment-gateway.stripe')
 
-                            <div class="tab-pane fade" id="v-pills-razorpay" role="tabpanel"
-                                aria-labelledby="v-pills-home-tab">
-                                <div class="row">
-                                    <div class="col-xl-12 m-auto">
-                                        <div class="wsus__payment_area">
-                                            <a class="nav-link common_btn text-center"
-                                                href="{{ route('user.paypal.payment') }}">Pay with RazorPay</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @include('frontend.pages.payment-gateway.razorpay')
 
                             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                                 aria-labelledby="v-pills-profile-tab">

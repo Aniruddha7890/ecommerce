@@ -213,4 +213,9 @@ class PaymentController extends Controller
             return redirect()->route('user.payment');
         }
     }
+
+    /** Razorpay payment */
+    public function payWithRazorpay(Request $request){
+        dd($request->all());
+    }
 }
