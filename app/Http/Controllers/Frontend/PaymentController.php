@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\PaypalSetting;
 use App\Models\Product;
+use App\Models\RazorPaySetting;
 use App\Models\StripeSetting;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Session;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Stripe\Charge;
 use Stripe\Stripe;
+use Razorpay\Api\Api;
 
 class PaymentController extends Controller
 {
@@ -215,7 +217,29 @@ class PaymentController extends Controller
     }
 
     /** Razorpay payment */
-    public function payWithRazorpay(Request $request){
-        dd($request->all());
+    public function payWithRazorpay(Request $request)
+    {
+        $razorpaySetting = RazorPaySetting::first();
+        $api = new Api($razorpaySetting->razorpay_key, $razorpaySetting->razorpay_secret_key);
+        $total = getFinalPayableAmount();
+        $payableAmount = round($total * $razorpaySetting->currency_rate, 2);
+        $payableAmountInPaisa = $payableAmount * 100;
+
+        if ($request->has('razorpay_payment_id') && $request->filled('razorpay_payment_id')) {
+            try {
+                $response = $api->payment->fetch($request->razorpay_payment_id)
+                    ->capture(['amount' => $payableAmountInPaisa]);
+            } catch (\Exception $e) {
+                toastr($e->getMessage(), 'error', 'Error');
+                return redirect()->back();
+            }
+        }
+
+        if ($response['status'] == 'captured') {
+            $this->storeOrder('razorpay', 1, $response['id'], $payableAmount, $razorpaySetting->currency_name);
+            //clear session
+            $this->clearSession();
+            return redirect()->route('user.payment.success');
+        }
     }
 }

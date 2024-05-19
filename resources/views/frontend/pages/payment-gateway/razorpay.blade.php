@@ -12,8 +12,7 @@
                     <script src="https://checkout.razorpay.com/v1/checkout.js"
 
                         data-key="{{$razorPaySetting->razorpay_key}}"
-                        {{-- data-amount="{{$payableAmount * 100}}" --}}
-                        data-amount={{ $payableAmount * 100}}
+                        data-amount={{$payableAmount * 100}}
                         data-buttontext="Pay With Razorpay"
                         data-name="payment"
                         data-description="Payment for product"
