@@ -27,6 +27,10 @@ return [
             'status' => 'Delivered',
             'details' => 'Delivered'
         ],
+        'canceled' => [
+            'status' => 'Canceled',
+            'details' => 'Canceled'
+        ],
     ],
 
     'order_status_vendor' => [

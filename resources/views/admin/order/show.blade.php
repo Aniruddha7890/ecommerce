@@ -51,15 +51,15 @@
                                 <div class="col-md-6">
                                     <address>
                                         <strong>Payment Information:</strong><br>
-                                        <b>Method:</b> {{$order->payment_method}}<br>
-                                        <b>Transaction Id: </b>{{@$order->transaction->transaction_id}} <br>
-                                        <b>Status: </b>{{$order->payment_status == 1 ? 'Complete' : 'Pending'}}
+                                        <b>Method:</b> {{ $order->payment_method }}<br>
+                                        <b>Transaction Id: </b>{{ @$order->transaction->transaction_id }} <br>
+                                        <b>Status: </b>{{ $order->payment_status == 1 ? 'Complete' : 'Pending' }}
                                     </address>
                                 </div>
                                 <div class="col-md-6 text-md-right">
                                     <address>
                                         <strong>Order Date:</strong><br>
-                                        {{date('d F, Y', strtotime($order->created_at))}}<br><br>
+                                        {{ date('d F, Y', strtotime($order->created_at)) }}<br><br>
                                     </address>
                                 </div>
                             </div>
@@ -82,37 +82,55 @@
                                         <th class="text-right">Totals</th>
                                     </tr>
                                     @foreach ($order->orderProducts as $product)
-                                    @php
-                                        $variants = json_decode($product->variants);
-                                    @endphp
+                                        @php
+                                            $variants = json_decode($product->variants);
+                                        @endphp
                                         <tr>
-                                            <td>{{++$loop->index}}</td>
+                                            <td>{{ ++$loop->index }}</td>
                                             @if (isset($product->product->slug))
-                                                <td><a target="_blank" href="{{route('product-detail', $product->product->slug)}}">{{$product->product_name}}</a></td>   
-                                            @else                                          
-                                                <td>{{$product->product_name}}</td>                                              
+                                                <td><a target="_blank"
+                                                        href="{{ route('product-detail', $product->product->slug) }}">{{ $product->product_name }}</a>
+                                                </td>
+                                            @else
+                                                <td>{{ $product->product_name }}</td>
                                             @endif
                                             <td>
                                                 @foreach ($variants as $key => $variant)
-                                                    <b>{{$key}} : </b> {{$variant->name}}( {{$settings->currency_icon}}{{$variant->price}} )
+                                                    <b>{{ $key }} : </b> {{ $variant->name }}(
+                                                    {{ $settings->currency_icon }}{{ $variant->price }} )
                                                 @endforeach
                                             </td>
-                                            <td>{{$product->vendor->shop_name}}</td>
-                                            <td class="text-center">{{$settings->currency_icon}}{{$product->unit_price}}</td>
-                                            <td class="text-center">{{$product->qty}}</td>
-                                            <td class="text-right">{{$settings->currency_icon}}{{($product->unit_price * $product->qty) + $product->variants_total}}</td>
+                                            <td>{{ $product->vendor->shop_name }}</td>
+                                            <td class="text-center">
+                                                {{ $settings->currency_icon }}{{ $product->unit_price }}</td>
+                                            <td class="text-center">{{ $product->qty }}</td>
+                                            <td class="text-right">
+                                                {{ $settings->currency_icon }}{{ $product->unit_price * $product->qty + $product->variants_total }}
+                                            </td>
                                         </tr>
-                                    @endforeach                                    
+                                    @endforeach
                                 </table>
                             </div>
                             <div class="row mt-4">
                                 <div class="col-lg-8">
                                     <div class="col-md-4">
                                         <div class="form-group">
+                                            <label for="">Payment Status</label>
+                                            <select name="payment_status" id="payment_status" data-id="{{ $order->id }}"
+                                                class="form-control">
+                                                <option {{ $order->payment_status == 0 ? 'selected' : '' }} value="0">
+                                                    Pending</option>
+                                                <option {{ $order->payment_status == 1 ? 'selected' : '' }} value="1">
+                                                    Completed</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="">Order Status</label>
-                                            <select name="order_status" id="order_status" data-id="{{$order->id}}" class="form-control">
-                                                @foreach (config('order_status.order_status_admin') as $key => $orderStatus)                                                    
-                                                    <option {{$order->order_status == $key ? 'selected' : ''}} value="{{$key}}">{{$orderStatus['status']}}</option>
+                                            <select name="order_status" id="order_status" data-id="{{ $order->id }}"
+                                                class="form-control">
+                                                @foreach (config('order_status.order_status_admin') as $key => $orderStatus)
+                                                    <option {{ $order->order_status == $key ? 'selected' : '' }}
+                                                        value="{{ $key }}">{{ $orderStatus['status'] }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -121,20 +139,24 @@
                                 <div class="col-lg-4 text-right">
                                     <div class="invoice-detail-item">
                                         <div class="invoice-detail-name">Subtotal</div>
-                                        <div class="invoice-detail-value">{{$settings->currency_icon}}{{$order->sub_total}}</div>
+                                        <div class="invoice-detail-value">
+                                            {{ $settings->currency_icon }}{{ $order->sub_total }}</div>
                                     </div>
                                     <div class="invoice-detail-item">
                                         <div class="invoice-detail-name">Shipping (+)</div>
-                                        <div class="invoice-detail-value">{{$settings->currency_icon}}{{@$shipping->cost}}</div>
+                                        <div class="invoice-detail-value">
+                                            {{ $settings->currency_icon }}{{ @$shipping->cost }}</div>
                                     </div>
                                     <div class="invoice-detail-item">
                                         <div class="invoice-detail-name">Coupon (-)</div>
-                                        <div class="invoice-detail-value">{{$settings->currency_icon}}{{@$coupon->discount}}</div>
+                                        <div class="invoice-detail-value">
+                                            {{ $settings->currency_icon }}{{ @$coupon->discount }}</div>
                                     </div>
                                     <hr class="mt-2 mb-2">
                                     <div class="invoice-detail-item">
                                         <div class="invoice-detail-name">Total</div>
-                                        <div class="invoice-detail-value invoice-detail-value-lg">{{$settings->currency_icon}}{{$order->amount}}</div>
+                                        <div class="invoice-detail-value invoice-detail-value-lg">
+                                            {{ $settings->currency_icon }}{{ $order->amount }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -143,12 +165,8 @@
                 </div>
                 <hr>
                 <div class="text-md-right">
-                    <div class="float-lg-left mb-lg-0 mb-3">
-                        <button class="btn btn-primary btn-icon icon-left"><i class="fas fa-credit-card"></i> Process
-                            Payment</button>
-                        <button class="btn btn-danger btn-icon icon-left"><i class="fas fa-times"></i> Cancel</button>
-                    </div>
-                    <button class="btn btn-warning btn-icon icon-left"><i class="fas fa-print"></i> Print</button>
+                    <button class="btn btn-warning btn-icon icon-left print_invoice"><i class="fas fa-print"></i> Print</button>
+
                 </div>
             </div>
         </div>
@@ -156,27 +174,62 @@
 @endsection
 
 @push('scripts')
-<script>
-    $(document).ready(function(){
+    <script>
+        $(document).ready(function() {
 
-        $('#order_status').on('change', function(){
-            let status = $(this).val();
-            let id = $(this).data('id');
-            $.ajax({
-                method: 'GET',
-                url: '{{route('admin.order.status')}}',
-                data: {status: status, id: id},
-                success: function(data){
-                    if(data.status == 'success'){
-                        toastr.success(data.message)
+            $('#order_status').on('change', function() {
+                let status = $(this).val();
+                let id = $(this).data('id');
+                $.ajax({
+                    method: 'GET',
+                    url: '{{ route('admin.order.status') }}',
+                    data: {
+                        status: status,
+                        id: id
+                    },
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            toastr.success(data.message)
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error);
                     }
-                },
-                error: function(error){
-                    console.log(error);
-                }
-            })
-        })
+                })
+            });
 
-    })
-</script>
+            $('#payment_status').on('change', function() {
+                let status = $(this).val();
+                let id = $(this).data('id');
+                $.ajax({
+                    method: 'GET',
+                    url: '{{ route('admin.payment.status') }}',
+                    data: {
+                        status: status,
+                        id: id
+                    },
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            toastr.success(data.message)
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                })
+            });
+
+            $('.print_invoice').on('click', function() {
+                let printBody = $('.invoice-print');
+                let origialContents = $('body').html();
+
+                $('body').html(printBody.html());
+
+                window.print();
+
+                $('body').html(origialContents);
+            })
+
+        })
+    </script>
 @endpush

@@ -109,6 +109,10 @@ Route::resource('shipping-rule', ShippingRuleController::class);
 
 /** Order routes */
 Route::get('order-status', [OrderController::class, 'changeOrderStatus'])->name('order.status');
+Route::get('payment-status', [OrderController::class, 'changePaymentStatus'])->name('payment.status');
+Route::get('pending-orders', [OrderController::class, 'pendingOrders'])->name('pending-orders');
+Route::get('processed-orders', [OrderController::class, 'processedOrders'])->name('processed-orders');
+Route::get('dropped-off-orders', [OrderController::class, 'droppedOffOrders'])->name('dropped-off-orders');
 Route::resource('order', OrderController::class);
 
 /** Setting routes */
