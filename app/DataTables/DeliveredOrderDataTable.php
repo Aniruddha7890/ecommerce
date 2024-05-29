@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class PendingOrderDataTable extends DataTable
+class DeliveredOrderDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -25,6 +25,7 @@ class PendingOrderDataTable extends DataTable
             ->addColumn('action', function ($query) {
                 $showBtn = "<a href='" . route('admin.order.show', $query->id) . "' class='btn btn-primary'><i class='far fa-eye'></i></a>";
                 $deleteBtn = "<a href='" . route('admin.products.destroy', $query->id) . "' class='btn btn-danger delete-item mx-2'><i class='fas fa-trash'></i></a>";
+
 
                 return $showBtn . $deleteBtn;
             })
@@ -82,7 +83,7 @@ class PendingOrderDataTable extends DataTable
      */
     public function query(Order $model): QueryBuilder
     {
-        return $model->where('order_status', 'pending')->newQuery();
+        return $model->where('order_status', 'delivered')->newQuery();
     }
 
     /**

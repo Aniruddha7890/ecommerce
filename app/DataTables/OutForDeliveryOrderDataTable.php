@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class PendingOrderDataTable extends DataTable
+class OutForDeliveryOrderDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -82,7 +82,7 @@ class PendingOrderDataTable extends DataTable
      */
     public function query(Order $model): QueryBuilder
     {
-        return $model->where('order_status', 'pending')->newQuery();
+        return $model->where('order_status', 'out_for_delivery')->newQuery();
     }
 
     /**
