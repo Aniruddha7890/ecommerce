@@ -52,6 +52,8 @@
                 </ul>
             </li>
 
+            <li class="{{ setActive(['admin.transaction']) }}"><a class="nav-link" href="{{route('admin.transaction')}}"><i class="far fa-square"></i> <span>Transactions</span></a></li>
+
             <li
                 class="dropdown {{ setActive([
                     'admin.brand.*',
@@ -108,7 +110,8 @@
             </li>
 
             <li class="dropdown {{ setActive(['admin.slider.*']) }}">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fas fa-columns"></i>
                     <span>Manage Website</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ setActive(['admin.slider.*']) }}"><a class="nav-link"
