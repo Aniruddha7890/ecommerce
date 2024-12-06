@@ -24,10 +24,9 @@ class VendorOrderDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
-                $showBtn = "<a href='" . route('admin.order.show', $query->id) . "' class='btn btn-primary'><i class='far fa-eye'></i></a>";
-                $deleteBtn = "<a href='" . route('admin.order.destroy', $query->id) . "' class='btn btn-danger delete-item mx-2'><i class='fas fa-trash'></i></a>";
+                $showBtn = "<a href='" . route('vendor.orders.show', $query->id) . "' class='btn btn-primary'><i class='far fa-eye'></i></a>";
 
-                return $showBtn . $deleteBtn;
+                return $showBtn;
             })
             ->addColumn('customer', function ($query) {
                 return $query->user->username;
