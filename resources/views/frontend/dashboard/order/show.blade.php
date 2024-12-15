@@ -1,4 +1,5 @@
 @php
+    dd($order);
     $address = json_decode($order->order_address);
 @endphp
 
@@ -10,8 +11,8 @@
 
 @section('content')
     <!--=============================
-                                                                                                                                                                              DASHBOARD START
-                                                                                                                                                                         ==============================-->
+                                                                                                                                                                                                                          DASHBOARD START
+                                                                                                                                                                                                                     ==============================-->
     <section id="wsus__dashboard">
         <div class="container-fluid">
 
@@ -24,8 +25,8 @@
 
                         <div class="wsus__dashboard_profile">
                             <!--============================
-                                                                                                                                                                                                         INVOICE PAGE START
-                                                                                                                                                                                                     ==============================-->
+                                                                                                                                                                                                                                                     INVOICE PAGE START
+                                                                                                                                                                                                                                                 ==============================-->
                             <section id="" class="invoice-print">
                                 <div class="wsus__invoice_area">
                                     <div class="wsus__invoice_header">
@@ -95,40 +96,36 @@
                                                         </th>
                                                     </tr>
                                                     @foreach ($order->orderProducts as $product)
-                                                        @if ($product->vendor_id == Auth::user()->vendor->id)
-                                                            @php
-                                                                $variants = json_decode($product->variants);
-                                                                $total = 0;
-                                                                $total += $product->unit_price * $product->qty;
-                                                            @endphp
-                                                            <tr>
-                                                                <td class="name">
-                                                                    <p>{{ $product->product_name }}</p>
-                                                                    @foreach ($variants as $key => $item)
-                                                                        <span>{{ $key }} :
-                                                                            {{ $item->name }}
-                                                                            ({{ $settings->currency_icon }}
-                                                                            {{ $item->price }})
-                                                                        </span>
-                                                                    @endforeach
-                                                                </td>
-                                                                <td class="vendor">
-                                                                    {{ $product->vendor->shop_name }}
-                                                                </td>
-                                                                <td class="amount">
-                                                                    {{ $settings->currency_icon }}
-                                                                    {{ $product->unit_price }}
-                                                                </td>
+                                                        @php
+                                                            $variants = json_decode($product->variants);
+                                                        @endphp
+                                                        <tr>
+                                                            <td class="name">
+                                                                <p>{{ $product->product_name }}</p>
+                                                                @foreach ($variants as $key => $item)
+                                                                    <span>{{ $key }} :
+                                                                        {{ $item->name }}
+                                                                        ({{ $settings->currency_icon }}
+                                                                        {{ $item->price }})
+                                                                    </span>
+                                                                @endforeach
+                                                            </td>
+                                                            <td class="vendor">
+                                                                {{ $product->vendor->shop_name }}
+                                                            </td>
+                                                            <td class="amount">
+                                                                {{ $settings->currency_icon }}
+                                                                {{ $product->unit_price }}
+                                                            </td>
 
-                                                                <td class="quentity">
-                                                                    {{ $product->qty }}
-                                                                </td>
-                                                                <td class="total">
-                                                                    {{ $settings->currency_icon }}
-                                                                    {{ $product->unit_price * $product->qty }}
-                                                                </td>
-                                                            </tr>
-                                                        @endif
+                                                            <td class="quentity">
+                                                                {{ $product->qty }}
+                                                            </td>
+                                                            <td class="total">
+                                                                {{ $settings->currency_icon }}
+                                                                {{ $product->unit_price * $product->qty }}
+                                                            </td>
+                                                        </tr>
                                                     @endforeach
 
                                                 </table>
@@ -137,35 +134,16 @@
                                     </div>
                                     <div class="wsus__invoice_footer">
                                         <p><span>Total Amount:</span> {{ $settings->currency_icon }}
-                                            {{ $total }} </p>
+                                            {{ $order->sub_total }} </p>
+                                        {{-- <p><span>Shipping Fee(+):</span> {{ $settings->currency_icon }} </p>
+                                        <p><span>Coupon(-):</span> {{ $settings->currency_icon }} </p> --}}
                                     </div>
                                 </div>
                             </section>
                             <!--============================
-                                                                                             INVOICE PAGE END
-                                                                                                                                                                                                    ==============================-->
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <form action="{{ route('vendor.orders.status', $order->id) }}">
-                                        <div class="form-group mt-5">
-                                            <label for="" class="mb-2">Order Status</label>
-                                            <select name="status" id="" class="form-control">
-                                                @foreach (config('order_status.order_status_vendor') as $key => $status)
-                                                    <option {{ $key == $order->order_status ? 'selected' : '' }}
-                                                        value="{{ $key }}">{{ $status['status'] }}</option>
-                                                @endforeach
-                                            </select>
-                                            <button class="btn btn-primary mt-3" type="submit">Save</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="mt-5 float-end">
-                                        <button class="btn btn-warning print_invoice"><i class="fas fa-print"></i>
-                                            Print</button>
-                                    </div>
-                                </div>
-                            </div>
+                                                                                                                                         INVOICE PAGE END
+                                                                                                                                                                                                                                                ==============================-->
+
                         </div>
                     </div>
                 </div>
@@ -173,23 +151,12 @@
         </div>
     </section>
     <!--=============================
-                                                                                                                                                                             DASHBOARD START
-                                                                                                                                                                        ==============================-->
+                                                                                                                                                                                                                         DASHBOARD START
+                                                                                                                                                                                                                    ==============================-->
 @endsection
 
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $('.print_invoice').on('click', function() {
-                let printBody = $('.invoice-print');
-                let origialContents = $('body').html();
-
-                $('body').html(printBody.html());
-
-                window.print();
-
-                $('body').html(origialContents);
-            })
-        })
+        $(document).ready(function() {})
     </script>
 @endpush

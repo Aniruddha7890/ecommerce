@@ -10,6 +10,7 @@ use App\Http\Controllers\Frontend\FrontendProductController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\UserAddressController;
 use App\Http\Controllers\Frontend\UserDashboardController;
+use App\Http\Controllers\Frontend\UserOrderController;
 use App\Http\Controllers\Frontend\UserProfileController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -63,7 +64,12 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'user', 'as' => 
     Route::put('profile', [UserProfileController::class, 'updateProfile'])->name('profile.update');
     Route::post('profile', [UserProfileController::class, 'updatePassword'])->name('profile.update.password');
 
+    /** User address routes */
     Route::resource('address', UserAddressController::class);
+
+    /** Orders routes */
+    Route::get('orders', [UserOrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/show/{id}', [UserOrderController::class, 'show'])->name('orders.show');
 
     /** Check out routes */
     Route::get('checkout', [CheckOutController::class, 'index'])->name('checkout');

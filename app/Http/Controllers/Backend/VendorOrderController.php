@@ -20,4 +20,14 @@ class VendorOrderController extends Controller
         $total = $order->calculateTotalForVendor(auth()->user()->vendor);
         return view('vendor.order.show', compact(['order', 'total']));
     }
+
+    public function orderStatus(Request $request, string $id)
+    {
+        $order = Order::findOrFail($id);
+        $order->order_status = $request->status;
+        $order->save();
+
+        toastr('Status Upadted Successfully', 'success', 'Success');
+        return redirect()->back();
+    }
 }
