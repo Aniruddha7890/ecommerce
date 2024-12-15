@@ -1,6 +1,8 @@
 @php
-    dd($order);
+    // dd($order);
     $address = json_decode($order->order_address);
+    $shipping = json_decode($order->shipping_method);
+    $coupon = json_decode($order->coupon);
 @endphp
 
 @extends('vendor.layouts.master')
@@ -11,8 +13,8 @@
 
 @section('content')
     <!--=============================
-                                                                                                                                                                                                                          DASHBOARD START
-                                                                                                                                                                                                                     ==============================-->
+                                                                                                                                                                                                                                                                                              DASHBOARD START
+                                                                                                                                                                                                                                                                                         ==============================-->
     <section id="wsus__dashboard">
         <div class="container-fluid">
 
@@ -25,8 +27,8 @@
 
                         <div class="wsus__dashboard_profile">
                             <!--============================
-                                                                                                                                                                                                                                                     INVOICE PAGE START
-                                                                                                                                                                                                                                                 ==============================-->
+                                                                                                                                                                                                                                                                                                                         INVOICE PAGE START
+                                                                                                                                                                                                                                                                                                                     ==============================-->
                             <section id="" class="invoice-print">
                                 <div class="wsus__invoice_area">
                                     <div class="wsus__invoice_header">
@@ -135,14 +137,23 @@
                                     <div class="wsus__invoice_footer">
                                         <p><span>Total Amount:</span> {{ $settings->currency_icon }}
                                             {{ $order->sub_total }} </p>
-                                        {{-- <p><span>Shipping Fee(+):</span> {{ $settings->currency_icon }} </p>
-                                        <p><span>Coupon(-):</span> {{ $settings->currency_icon }} </p> --}}
+                                        <p><span>Shipping Fee(+):</span> {{ $settings->currency_icon }}
+                                            {{ $shipping->cost }} </p>
+                                        {{-- <p><span>Coupon(-):</span> {{ $settings->currency_icon }} {{ $coupon->discount }} --}}
+                                        <p><span>Total Amount:</span> {{ $settings->currency_icon }} {{ $order->amount }}
+                                        </p>
                                     </div>
                                 </div>
                             </section>
                             <!--============================
-                                                                                                                                         INVOICE PAGE END
-                                                                                                                                                                                                                                                ==============================-->
+                                                                                                                                                                                                             INVOICE PAGE END
+                                                                                                                                                                                                                                                                                                                    ==============================-->
+                            <div class="col">
+                                <div class="mt-2 float-end">
+                                    <button class="btn btn-warning print_invoice"><i class="fas fa-print"></i>
+                                        Print</button>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -151,12 +162,23 @@
         </div>
     </section>
     <!--=============================
-                                                                                                                                                                                                                         DASHBOARD START
-                                                                                                                                                                                                                    ==============================-->
+                                                                                                                                                                                                                                                                                             DASHBOARD START
+                                                                                                                                                                                                                                                                                        ==============================-->
 @endsection
 
 @push('scripts')
     <script>
-        $(document).ready(function() {})
+        $(document).ready(function() {
+            $('.print_invoice').on('click', function() {
+                let printBody = $('.invoice-print');
+                let origialContents = $('body').html();
+
+                $('body').html(printBody.html());
+
+                window.print();
+
+                $('body').html(origialContents);
+            })
+        })
     </script>
 @endpush
