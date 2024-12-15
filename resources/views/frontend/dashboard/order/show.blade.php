@@ -13,8 +13,8 @@
 
 @section('content')
     <!--=============================
-                                                                                                                                                                                                                                                                                              DASHBOARD START
-                                                                                                                                                                                                                                                                                         ==============================-->
+                                                                                                                                                                                                                                                                                                      DASHBOARD START
+                                                                                                                                                                                                                                                                                                 ==============================-->
     <section id="wsus__dashboard">
         <div class="container-fluid">
 
@@ -27,8 +27,8 @@
 
                         <div class="wsus__dashboard_profile">
                             <!--============================
-                                                                                                                                                                                                                                                                                                                         INVOICE PAGE START
-                                                                                                                                                                                                                                                                                                                     ==============================-->
+                                                                                                                                                                                                                                                                                                                                 INVOICE PAGE START
+                                                                                                                                                                                                                                                                                                                             ==============================-->
                             <section id="" class="invoice-print">
                                 <div class="wsus__invoice_area">
                                     <div class="wsus__invoice_header">
@@ -139,15 +139,18 @@
                                             {{ $order->sub_total }} </p>
                                         <p><span>Shipping Fee(+):</span> {{ $settings->currency_icon }}
                                             {{ $shipping->cost }} </p>
-                                        {{-- <p><span>Coupon(-):</span> {{ $settings->currency_icon }} {{ $coupon->discount }} --}}
+                                        @if ($coupon)
+                                            <p><span>Coupon(-):</span> {{ $settings->currency_icon }}
+                                                {{ $coupon->discount }}</p>
+                                        @endif
                                         <p><span>Total Amount:</span> {{ $settings->currency_icon }} {{ $order->amount }}
                                         </p>
                                     </div>
                                 </div>
                             </section>
                             <!--============================
-                                                                                                                                                                                                             INVOICE PAGE END
-                                                                                                                                                                                                                                                                                                                    ==============================-->
+                                                                                                                                                                                                                     INVOICE PAGE END
+                                                                                                                                                                                                                                                                                                                            ==============================-->
                             <div class="col">
                                 <div class="mt-2 float-end">
                                     <button class="btn btn-warning print_invoice"><i class="fas fa-print"></i>
@@ -162,8 +165,8 @@
         </div>
     </section>
     <!--=============================
-                                                                                                                                                                                                                                                                                             DASHBOARD START
-                                                                                                                                                                                                                                                                                        ==============================-->
+                                                                                                                                                                                                                                                                                                     DASHBOARD START
+                                                                                                                                                                                                                                                                                                ==============================-->
 @endsection
 
 @push('scripts')
