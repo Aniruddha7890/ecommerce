@@ -52,7 +52,9 @@
                 </ul>
             </li>
 
-            <li class="{{ setActive(['admin.transaction']) }}"><a class="nav-link" href="{{route('admin.transaction')}}"><i class="far fa-square"></i> <span>Transactions</span></a></li>
+            <li class="{{ setActive(['admin.transaction']) }}"><a class="nav-link"
+                    href="{{ route('admin.transaction') }}"><i class="far fa-square"></i> <span>Transactions</span></a>
+            </li>
 
             <li
                 class="dropdown {{ setActive([
@@ -116,6 +118,8 @@
                 <ul class="dropdown-menu">
                     <li class="{{ setActive(['admin.slider.*']) }}"><a class="nav-link"
                             href="{{ route('admin.slider.index') }}">Slider</a></li>
+                    <li class="{{ setActive(['admin.home-page-setting.*']) }}"><a class="nav-link"
+                            href="{{ route('admin.home-page-setting') }}">Home Page Settings</a></li>
                 </ul>
             </li>
 

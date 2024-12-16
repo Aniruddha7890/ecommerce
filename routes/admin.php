@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ChildCategoryController;
 use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\FlashSaleController;
+use App\Http\Controllers\Backend\HomePageSettingController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\PaymentSettingController;
 use App\Http\Controllers\Backend\PaypalSettingController;
@@ -52,7 +53,7 @@ Route::resource('sub-category', SubCategoryController::class);
 /** Child Category routes */
 
 Route::put('child-category/change-status', [ChildCategoryController::class, 'changeStatus'])->name('child-category.change-status');
-Route::get('get-subcategories/change-status', [ChildCategoryController::class, 'getSubCategories'])->name('get-subcategories');     
+Route::get('get-subcategories/change-status', [ChildCategoryController::class, 'getSubCategories'])->name('get-subcategories');
 Route::resource('child-category', ChildCategoryController::class);
 
 /** Brand routes */
@@ -127,9 +128,11 @@ Route::get('transaction', [TransactionController::class, 'index'])->name('transa
 Route::get('setting', [SettingController::class, 'index'])->name('settings.index');
 Route::put('general-setting-update', [SettingController::class, 'generalSettingUpdate'])->name('general-setting-update');
 
+/** Home page setting routes */
+Route::get('home-page-setting', [HomePageSettingController::class, 'index'])->name('home-page-setting');
+
 /** Payment setting routes */
 Route::get('payment-settings', [PaymentSettingController::class, 'index'])->name('payment-settings.index');
 Route::resource('paypal-setting', PaypalSettingController::class);
 Route::put('stripe-setting/{id}', [StripeSettingController::class, 'update'])->name('stripe-setting.update');
 Route::put('razorpay-setting/{id}', [RazorPaySettingController::class, 'update'])->name('razorpay-setting.update');
-
