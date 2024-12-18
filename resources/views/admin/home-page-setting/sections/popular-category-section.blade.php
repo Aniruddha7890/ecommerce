@@ -4,12 +4,130 @@
             <form action="" method="POST">
                 @csrf
                 @method('PUT')
-                <div class="form-group">
-                    <label>Layout</label>
-                    <select name="layout" id="" class="form-control">
-                        <option>test</option>
-                    </select>
+                <h5>Category 1</h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select name="layout" id="" class="form-control">
+                                <option value="">Select</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Subcategory</label>
+                            <select name="layout" id="" class="form-control">
+                                <option>test</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Childcategory</label>
+                            <select name="layout" id="" class="form-control">
+                                <option>test</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
+
+                <h5>Category 2</h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select name="layout" id="" class="form-control">
+                                <option value="">Select</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Subcategory</label>
+                            <select name="layout" id="" class="form-control">
+                                <option>test</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Childcategory</label>
+                            <select name="layout" id="" class="form-control">
+                                <option>test</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <h5>Category 3</h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select name="layout" id="" class="form-control">
+                                <option value="">Select</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Subcategory</label>
+                            <select name="layout" id="" class="form-control">
+                                <option>test</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Childcategory</label>
+                            <select name="layout" id="" class="form-control">
+                                <option>test</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <h5>Category 4</h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select name="layout" id="" class="form-control">
+                                <option value="">Select</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Subcategory</label>
+                            <select name="layout" id="" class="form-control">
+                                <option>test</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Childcategory</label>
+                            <select name="layout" id="" class="form-control">
+                                <option>test</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
