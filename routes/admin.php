@@ -130,6 +130,7 @@ Route::put('general-setting-update', [SettingController::class, 'generalSettingU
 
 /** Home page setting routes */
 Route::get('home-page-setting', [HomePageSettingController::class, 'index'])->name('home-page-setting');
+Route::put('popular-category-setting', [HomePageSettingController::class, 'updatePopularCategorySection'])->name('popular-category-setting');
 
 /** Payment setting routes */
 Route::get('payment-settings', [PaymentSettingController::class, 'index'])->name('payment-settings.index');
