@@ -121,7 +121,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Childcategory</label>
-                            <select name="child-cat_four" id="" class="form-control child-category">
+                            <select name="child_cat_four" id="" class="form-control child-category">
                                 <option>Select</option>
                             </select>
                         </div>
