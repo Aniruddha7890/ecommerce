@@ -1,3 +1,7 @@
+@php
+    $popularCategories = json_decode($popularCategories->value);
+    dd($popularCategories);
+@endphp
 <section id="wsus__monthly_top" class="wsus__monthly_top_2">
     <div class="container">
         <div class="row">
@@ -19,14 +23,10 @@
         <div class="row">
             <div class="col-xl-12">
                 <div class="wsus__section_header for_md">
-                    <h3>Top Categories Of The Month</h3>
+                    <h3>Popular Categories</h3>
                     <div class="monthly_top_filter">
-                        <button class=" active" data-filter="*">music</button>
+                        <button class=" active" data-filter="*">All</button>
                         <button data-filter=".cloth">clothing</button>
-                        <button data-filter=".elec">Electronic</button>
-                        <button data-filter=".spk">Speakers</button>
-                        <button data-filter=".cam">Cameras</button>
-                        <button data-filter=".wat">Watches</button>
                     </div>
                 </div>
             </div>

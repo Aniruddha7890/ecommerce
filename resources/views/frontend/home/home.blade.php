@@ -1,117 +1,114 @@
 @extends('frontend.layouts.master')
 
 @section('title')
-{{$settings->site_name}} || e-Commerce HTML Template
+    {{ $settings->site_name }} || e-Commerce HTML Template
 @endsection
 
 @section('content')
+    <!--============================
+            BANNER PART 2 START
+        ==============================-->
+    @include('frontend.home.sections.banner-slider')
+    <!--============================
+            BANNER PART 2 END
+        ==============================-->
 
 
     <!--============================
-        BANNER PART 2 START
-    ==============================-->
-        @include('frontend.home.sections.banner-slider')
+            FLASH SELL START
+        ==============================-->
+    @include('frontend.home.sections.flash-sale')
     <!--============================
-        BANNER PART 2 END
-    ==============================-->
+            FLASH SELL END
+        ==============================-->
 
 
     <!--============================
-        FLASH SELL START
-    ==============================-->
-        @include('frontend.home.sections.flash-sale')
+           MONTHLY TOP PRODUCT START
+        ==============================-->
+    @include('frontend.home.sections.top-category-product')
     <!--============================
-        FLASH SELL END
-    ==============================-->
+           MONTHLY TOP PRODUCT END
+        ==============================-->
 
 
     <!--============================
-       MONTHLY TOP PRODUCT START
-    ==============================-->
-        {{-- @include('frontend.home.sections.top-category-product') --}}
+            BRAND SLIDER START
+        ==============================-->
+    {{-- @include('frontend.home.sections.band-slider') --}}
     <!--============================
-       MONTHLY TOP PRODUCT END
-    ==============================-->
+            BRAND SLIDER END
+        ==============================-->
 
 
     <!--============================
-        BRAND SLIDER START
-    ==============================-->
-        {{-- @include('frontend.home.sections.band-slider') --}}
+            SINGLE BANNER START
+        ==============================-->
+    {{-- @include('frontend.home.sections.single-banner') --}}
     <!--============================
-        BRAND SLIDER END
-    ==============================-->
+            SINGLE BANNER END
+        ==============================-->
 
 
     <!--============================
-        SINGLE BANNER START
-    ==============================-->
-        {{-- @include('frontend.home.sections.single-banner') --}}
+            HOT DEALS START
+        ==============================-->
+    {{-- @include('frontend.home.sections.hot-deals') --}}
     <!--============================
-        SINGLE BANNER END  
-    ==============================-->
+            HOT DEALS END
+        ==============================-->
 
 
     <!--============================
-        HOT DEALS START
-    ==============================-->
-        {{-- @include('frontend.home.sections.hot-deals') --}}
+            ELECTRONIC PART START
+        ==============================-->
+    {{-- @include('frontend.home.sections.category-product-slder-one') --}}
     <!--============================
-        HOT DEALS END  
-    ==============================-->
+            ELECTRONIC PART END
+        ==============================-->
 
 
     <!--============================
-        ELECTRONIC PART START  
-    ==============================-->
-        {{-- @include('frontend.home.sections.category-product-slder-one') --}}
+            ELECTRONIC PART START
+        ==============================-->
+    {{-- @include('frontend.home.sections.category-product-slder-two') --}}
     <!--============================
-        ELECTRONIC PART END  
-    ==============================-->
+            ELECTRONIC PART END
+        ==============================-->
 
 
     <!--============================
-        ELECTRONIC PART START  
-    ==============================-->
-        {{-- @include('frontend.home.sections.category-product-slder-two') --}}
+            LARGE BANNER  START
+        ==============================-->
+    {{-- @include('frontend.home.sections.large-banner') --}}
     <!--============================
-        ELECTRONIC PART END  
-    ==============================-->
+            LARGE BANNER  END
+        ==============================-->
 
 
     <!--============================
-        LARGE BANNER  START  
-    ==============================-->
-        {{-- @include('frontend.home.sections.large-banner') --}}
+            WEEKLY BEST ITEM START
+        ==============================-->
+    {{-- @include('frontend.home.sections.weekly-best-item') --}}
     <!--============================
-        LARGE BANNER  END  
-    ==============================-->
+            WEEKLY BEST ITEM END
+        ==============================-->
 
 
     <!--============================
-        WEEKLY BEST ITEM START  
-    ==============================-->
-        {{-- @include('frontend.home.sections.weekly-best-item') --}}
+          HOME SERVICES START
+        ==============================-->
+    {{-- @include('frontend.home.sections.services') --}}
     <!--============================
-        WEEKLY BEST ITEM END 
-    ==============================-->
+            HOME SERVICES END
+        ==============================-->
 
 
     <!--============================
-      HOME SERVICES START
-    ==============================-->
-        {{-- @include('frontend.home.sections.services') --}}
+            HOME BLOGS START
+        ==============================-->
+    {{-- @include('frontend.home.sections.blog')/ --}}
     <!--============================
-        HOME SERVICES END
-    ==============================-->
-
-
-    <!--============================
-        HOME BLOGS START
-    ==============================-->
-        {{-- @include('frontend.home.sections.blog')/ --}}
-    <!--============================
-        HOME BLOGS END
-    ==============================-->
-
+            HOME BLOGS END
+        ==============================-->
 @endsection
