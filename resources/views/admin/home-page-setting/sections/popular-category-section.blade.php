@@ -52,7 +52,7 @@
                             @endphp
                             <label>Childcategory</label>
                             <select name="child_cat_one" id="" class="form-control child-category">
-                                <option>Select</option>
+                                <option value="">Select</option>
                                 @foreach ($childCategories as $childCategory)
                                     <option
                                         {{ $childCategory->id == $popularCategorySection[0]->child_category ? 'selected' : '' }}
@@ -88,7 +88,7 @@
                             @endphp
                             <label>Subcategory</label>
                             <select name="sub_cat_two" id="" class="form-control sub-category">
-                                <option>Select</option>
+                                <option value="">Select</option>
                                 @foreach ($subCategories as $subCategory)
                                     <option
                                         {{ $subCategory->id == $popularCategorySection[1]->sub_category ? 'selected' : '' }}
@@ -107,7 +107,7 @@
                             @endphp
                             <label>Childcategory</label>
                             <select name="child_cat_two" id="" class="form-control child-category">
-                                <option>Select</option>
+                                <option value="">Select</option>
                                 @foreach ($childCategories as $childCategory)
                                     <option
                                         {{ $childCategory->id == $popularCategorySection[1]->child_category ? 'selected' : '' }}
@@ -143,7 +143,7 @@
                             @endphp
                             <label>Subcategory</label>
                             <select name="sub_cat_three" id="" class="form-control sub-category">
-                                <option>Select</option>
+                                <option value="">Select</option>
                                 @foreach ($subCategories as $subCategory)
                                     <option
                                         {{ $subCategory->id == $popularCategorySection[2]->sub_category ? 'selected' : '' }}
@@ -162,7 +162,7 @@
                             @endphp
                             <label>Childcategory</label>
                             <select name="child_cat_three" id="" class="form-control child-category">
-                                <option>Select</option>
+                                <option value="">Select</option>
                                 @foreach ($childCategories as $childCategory)
                                     <option
                                         {{ $childCategory->id == $popularCategorySection[2]->child_category ? 'selected' : '' }}
@@ -198,7 +198,7 @@
                                 )->get();
                             @endphp
                             <select name="sub_cat_four" id="" class="form-control sub-category">
-                                <option>Select</option>
+                                <option value="">Select</option>
                                 @foreach ($subCategories as $subCategory)
                                     <option
                                         {{ $subCategory->id == $popularCategorySection[3]->sub_category ? 'selected' : '' }}
@@ -217,7 +217,7 @@
                             @endphp
                             <label>Childcategory</label>
                             <select name="child_cat_four" id="" class="form-control child-category">
-                                <option>Select</option>
+                                <option value="">Select</option>
                                 @foreach ($childCategories as $childCategory)
                                     <option
                                         {{ $childCategory->id == $popularCategorySection[3]->child_category ? 'selected' : '' }}
