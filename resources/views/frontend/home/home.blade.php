@@ -6,109 +6,109 @@
 
 @section('content')
     <!--============================
-                                BANNER PART 2 START
-                            ==============================-->
+                                    BANNER PART 2 START
+                                ==============================-->
     @include('frontend.home.sections.banner-slider')
     <!--============================
-                                BANNER PART 2 END
-                            ==============================-->
+                                    BANNER PART 2 END
+                                ==============================-->
 
 
     <!--============================
-                                FLASH SELL START
-                            ==============================-->
+                                    FLASH SELL START
+                                ==============================-->
     @include('frontend.home.sections.flash-sale')
     <!--============================
-                                FLASH SELL END
-                            ==============================-->
+                                    FLASH SELL END
+                                ==============================-->
 
 
     <!--============================
-                               MONTHLY TOP PRODUCT START
-                            ==============================-->
+                                   MONTHLY TOP PRODUCT START
+                                ==============================-->
     @include('frontend.home.sections.top-category-product')
     <!--============================
-                               MONTHLY TOP PRODUCT END
-                            ==============================-->
+                                   MONTHLY TOP PRODUCT END
+                                ==============================-->
 
 
     <!--============================
-                                BRAND SLIDER START
-                            ==============================-->
+                                    BRAND SLIDER START
+                                ==============================-->
     @include('frontend.home.sections.band-slider')
     <!--============================
-                                BRAND SLIDER END
-                            ==============================-->
+                                    BRAND SLIDER END
+                                ==============================-->
 
 
     <!--============================
-                                SINGLE BANNER START
-                            ==============================-->
+                                    SINGLE BANNER START
+                                ==============================-->
     @include('frontend.home.sections.single-banner')
     <!--============================
-                                SINGLE BANNER END
-                            ==============================-->
+                                    SINGLE BANNER END
+                                ==============================-->
 
 
     <!--============================
-                                HOT DEALS START
-                            ==============================-->
+                                    HOT DEALS START
+                                ==============================-->
     @include('frontend.home.sections.hot-deals')
     <!--============================
-                                HOT DEALS END
-                            ==============================-->
+                                    HOT DEALS END
+                                ==============================-->
 
 
     <!--============================
-                                ELECTRONIC PART START
-                            ==============================-->
+                                    ELECTRONIC PART START
+                                ==============================-->
     @include('frontend.home.sections.category-product-slder-one')
     <!--============================
-                                ELECTRONIC PART END
-                            ==============================-->
+                                    ELECTRONIC PART END
+                                ==============================-->
 
 
     <!--============================
-                                ELECTRONIC PART START
-                            ==============================-->
+                                    ELECTRONIC PART START
+                                ==============================-->
     @include('frontend.home.sections.category-product-slder-two')
     <!--============================
-                                ELECTRONIC PART END
-                            ==============================-->
+                                    ELECTRONIC PART END
+                                ==============================-->
 
 
     <!--============================
-                                LARGE BANNER  START
-                            ==============================-->
-    {{-- @include('frontend.home.sections.large-banner') --}}
+                                    LARGE BANNER  START
+                                ==============================-->
+    @include('frontend.home.sections.large-banner')
     <!--============================
-                                LARGE BANNER  END
-                            ==============================-->
+                                    LARGE BANNER  END
+                                ==============================-->
 
 
     <!--============================
-                                WEEKLY BEST ITEM START
-                            ==============================-->
-    {{-- @include('frontend.home.sections.weekly-best-item') --}}
+                                    WEEKLY BEST ITEM START
+                                ==============================-->
+    @include('frontend.home.sections.weekly-best-item')
     <!--============================
-                                WEEKLY BEST ITEM END
-                            ==============================-->
+                                    WEEKLY BEST ITEM END
+                                ==============================-->
 
 
     <!--============================
-                              HOME SERVICES START
-                            ==============================-->
+                                  HOME SERVICES START
+                                ==============================-->
     {{-- @include('frontend.home.sections.services') --}}
     <!--============================
-                                HOME SERVICES END
-                            ==============================-->
+                                    HOME SERVICES END
+                                ==============================-->
 
 
     <!--============================
-                                HOME BLOGS START
-                            ==============================-->
+                                    HOME BLOGS START
+                                ==============================-->
     {{-- @include('frontend.home.sections.blog')/ --}}
     <!--============================
-                                HOME BLOGS END
-                            ==============================-->
+                                    HOME BLOGS END
+                                ==============================-->
 @endsection
