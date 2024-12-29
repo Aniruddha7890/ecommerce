@@ -9,23 +9,38 @@ class Product extends Model
 {
     use HasFactory;
 
-    public function vendor(){
+    public function vendor()
+    {
         return $this->belongsTo(Vendor::class);
     }
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
-    public function productImageGalleries(){
+    public function sub_category()
+    {
+        return $this->belongsTo(SubCategory::class);
+    }
+
+    public function child_category()
+    {
+        return $this->belongsTo(ChildCategory::class);
+    }
+
+    public function productImageGalleries()
+    {
         return $this->hasMany(ProductImageGallery::class);
     }
 
-    public function variants(){
+    public function variants()
+    {
         return $this->hasMany(ProductVariant::class);
     }
 
-    public function brand(){
+    public function brand()
+    {
         return $this->belongsTo(Brand::class);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\ChildCategory;
 use App\Models\Product;
@@ -60,99 +61,47 @@ class FrontendProductController extends Controller
                     return $query->where('price', '>=', $from)->where('price', '<=', $to);
                 })
                 ->paginate(12);
+        } else if ($request->has('brand')) {
+            $brand = Brand::where('slug', $request->brand)->firstOrFail();
+            $products = Product::where([
+                'brand_id' => $brand->id,
+                'status' => 1,
+                'is_approved' => 1
+            ])
+                ->when($request->has('range'), function ($query) use ($request) {
+                    $price = explode(';', $request->range);
+                    $from = $price[0];
+                    $to = $price[1];
+
+                    return $query->where('price', '>=', $from)->where('price', '<=', $to);
+                })
+                ->paginate(12);
+        } else if ($request->has('search')) {
+            $products = Product::where(['status' => 1, 'is_approved' => 1])
+                ->where(function ($query) use ($request) {
+                    $query
+                        ->where('name', 'like', '%' . $request->search . '%')
+                        ->orWhere('short_description', 'like', '%' . $request->search . '%')
+                        ->orWhere('long_description', 'like', '%' . $request->search . '%');
+                })
+                // ->orWhereHas('category', function ($query) use ($request) {
+                //     $query->where('name', 'like', '%' . $request->search . '%')
+                //         ->orWhere('long_description', 'like', '%' . $request->search . '%');
+                // })
+                ->orWhereRelation('category', 'categories.name', 'like', '%' . $request->search . '%')
+                ->orWhereRelation('sub_category', 'sub_categories.name', 'like', '%' . $request->search . '%')
+                ->orWhereRelation('child_category', 'child_categories.name', 'like', '%' . $request->search . '%')
+                ->paginate(12);
+        } else {
+            $products = Product::where(['status' => 1, 'is_approved' => 1])
+                ->orderBy('id', 'DESC')
+                ->paginate(12);
         }
+
+        $brands = Brand::where('status', 1)->get();
         $categories = Category::where('status', 1)->get();
-        return view('frontend.pages.product', compact('products', 'categories'));
+        return view('frontend.pages.product', compact('products', 'categories', 'brands'));
     }
-
-    // public function productsIndex(Request $request)
-    // {
-
-    //     $withRange = false;
-
-    //     $from = 0;
-
-    //     $to = 10000;
-
-    //     if ($request->has('range') && !empty($request->range)) {
-
-    //         $withRange = true;
-
-    //         $price = explode(';', $request->range);
-
-    //         $from = $price[0] ? $price[0] : 0;
-
-    //         $to = isset($price[1]) ? $price[1] : 10000;
-    //     }
-
-    //     if ($request->has('category')) {
-
-    //         $category = Category::where('slug', $request->category)->first();
-
-    //         $products = Product::where([
-
-    //             'category_id' => $category->id,
-
-    //             'status' => 1,
-
-    //             'is_approved' => 1,
-
-    //         ])
-
-    //             ->when($withRange, function ($query) use ($from, $to) {
-
-    //                 return $query->where('price', '>=', $from)->where('price', '<=', $to);
-    //             })
-
-    //             ->paginate(12);
-    //     } elseif ($request->has('subcategory')) {
-
-    //         $subCategory = SubCategory::where('slug', $request->subcategory)->first();
-
-    //         $products = Product::where([
-
-    //             'sub_category_id' => $subCategory->id,
-
-    //             'status' => 1,
-
-    //             'is_approved' => 1,
-
-    //         ])
-
-    //             ->when($withRange, function ($query) use ($from, $to) {
-
-    //                 return $query->where('price', '>=', $from)->where('price', '<=', $to);
-    //             })
-
-    //             ->paginate(12);
-    //     } elseif ($request->has('childcategory')) {
-
-    //         $childCategory = ChildCategory::where('slug', $request->childcategory)->first();
-
-    //         $products = Product::where([
-
-    //             'child_category_id' => $childCategory->id,
-
-    //             'status' => 1,
-
-    //             'is_approved' => 1,
-
-    //         ])
-
-    //             ->when($withRange, function ($query) use ($from, $to) {
-
-    //                 return $query->where('price', '>=', $from)->where('price', '<=', $to);
-    //             })
-
-    //             ->paginate(12);
-    //     }
-
-
-
-    //     $categories = Category::where(['status' => 1])->get();
-
-    //     return view('frontend.pages.product', compact('products', 'categories'));
-    // }
 
     public function showProduct(string $slug)
     {
