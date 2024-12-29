@@ -6,8 +6,8 @@
 
 @section('content')
     <!--============================
-                                                                                                                        BREADCRUMB START
-                                                                                                                    ==============================-->
+                                                                                                                                                                                                                            BREADCRUMB START
+                                                                                                                                                                                                                        ==============================-->
     <section id="wsus__breadcrumb">
         <div class="wsus_breadcrumb_overlay">
             <div class="container">
@@ -24,13 +24,13 @@
         </div>
     </section>
     <!--============================
-                                                                                                                        BREADCRUMB END
-                                                                                                                    ==============================-->
+                                                                                                                                                                                                                            BREADCRUMB END
+                                                                                                                                                                                                                        ==============================-->
 
 
     <!--============================
-                                                                                                                        PRODUCT PAGE START
-                                                                                                                    ==============================-->
+                                                                                                                                                                                                                            PRODUCT PAGE START
+                                                                                                                                                                                                                        ==============================-->
     <section id="wsus__product_page">
         <div class="container">
             <div class="row">
@@ -68,15 +68,11 @@
                                     data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <ul>
-                                            <li><a href="#">Accessories</a></li>
-                                            <li><a href="#">Babies</a></li>
-                                            <li><a href="#">Babies</a></li>
-                                            <li><a href="#">Beauty</a></li>
-                                            <li><a href="#">Decoration</a></li>
-                                            <li><a href="#">Electronics</a></li>
-                                            <li><a href="#">Fashion</a></li>
-                                            <li><a href="#">Food</a></li>
-                                            <li><a href="#">Furniture</a></li>
+                                            @foreach ($categories as $category)
+                                                <li><a
+                                                        href="{{ route('products.index', ['category' => $category->slug]) }}">{{ $category->name }}</a>
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
@@ -92,8 +88,17 @@
                                     data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="price_ranger">
-                                            <input type="hidden" id="slider_range" class="flat-slider" />
-                                            <button type="submit" class="common_btn">filter</button>
+                                            <form action="{{ url()->current() }}">
+                                                @foreach (request()->query() as $key => $value)
+                                                    @if ($key != 'range')
+                                                        <input type="hidden" name="{{ $key }}"
+                                                            value="{{ $value }}" />
+                                                    @endif
+                                                @endforeach
+                                                <input type="hidden" id="slider_range" name="range"
+                                                    class="flat-slider" />
+                                                <button type="submit" class="common_btn">filter</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -256,23 +261,6 @@
                                             <i class="fas fa-list-ul"></i>
                                         </button>
                                     </div>
-                                    <div class="wsus__topbar_select">
-                                        <select class="select_2" name="state">
-                                            <option>default shorting</option>
-                                            <option>short by rating</option>
-                                            <option>short by latest</option>
-                                            <option>low to high </option>
-                                            <option>high to low</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="wsus__topbar_select">
-                                    <select class="select_2" name="state">
-                                        <option>show 12</option>
-                                        <option>show 15</option>
-                                        <option>show 18</option>
-                                        <option>show 21</option>
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -432,35 +420,30 @@
                             </div>
                         </div>
                     </div>
+                    @if (count($products) == 0)
+                        <div class="text-center mt-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h2>Products not found</h2>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
-                <div class="col-xl-12">
-                    <section id="pagination">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Previous">
-                                        <i class="fas fa-chevron-left"></i>
-                                    </a>
-                                </li>
-                                <li class="page-item"><a class="page-link page_active" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </section>
+
+                <div class="col-xl-12 text-center">
+                    <div class="mt-5" style="display: flex; justify-content: center;">
+                        @if ($products->hasPages())
+                            {{ $products->withQueryString()->links() }}
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
     </section>
     <!--============================
-                                                                                                                        PRODUCT PAGE END
-                                                                                                                    ==============================-->
+                                                                                                                                                                                                                            PRODUCT PAGE END
+                                                                                                                                                                                                                        ==============================-->
 @endsection
 
 @push('scripts')
