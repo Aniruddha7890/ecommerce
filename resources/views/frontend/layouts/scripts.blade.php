@@ -16,14 +16,14 @@
                 data: formData,
                 url: "{{ route('add-to-cart') }}",
                 success: function(data) {
-                    if(data.status == 'success'){
+                    if (data.status == 'success') {
                         getCartCount();
                         fetchSidebarCartProducts();
                         $('.mini-cart-actions').removeClass('d-none');
                         toastr.success(data.message);
-                    } else if(data.status == 'error'){
+                    } else if (data.status == 'error') {
                         toastr.error(data.message);
-                    }                    
+                    }
                 },
                 error: function(error) {
 
@@ -119,6 +119,13 @@
                 }
             })
         }
-        
+
+        //add product to wishlist
+        $('.wishlist').on('click', function(e) {
+            e.preventDefault();
+            let id = $(this).data('id');
+            alert(id);
+        })
+
     })
 </script>
