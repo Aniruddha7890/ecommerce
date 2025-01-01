@@ -6,8 +6,8 @@
 
 @section('content')
     <!--============================
-                BREADCRUMB START
-            ==============================-->
+                            BREADCRUMB START
+                        ==============================-->
     <section id="wsus__breadcrumb">
         <div class="wsus_breadcrumb_overlay">
             <div class="container">
@@ -24,13 +24,13 @@
         </div>
     </section>
     <!--============================
-                BREADCRUMB END
-            ==============================-->
+                            BREADCRUMB END
+                        ==============================-->
 
 
     <!--============================
-                DAILY DEALS DETAILS START
-            ==============================-->
+                            DAILY DEALS DETAILS START
+                        ==============================-->
     <section id="wsus__daily_deals">
         <div class="container">
             <div class="wsus__offer_details_area">
@@ -96,10 +96,12 @@
                                         alt="product" class="img-fluid w-100 img_2" />
                                 </a>
                                 <ul class="wsus__single_pro_icon">
-                                    <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal-{{$product->id}}"><i
+                                    <li><a href="#" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal-{{ $product->id }}"><i
                                                 class="far fa-eye"></i></a></li>
-                                    <li><a href="#"><i class="far fa-heart"></i></a></li>
-                                    <li><a href="#"><i class="far fa-random"></i></a>
+                                    <li><a href="" class="add_to_wishlist" data-id="{{ $product->id }}"><i
+                                                class="far fa-heart"></i></a></li>
+                                    {{-- <li><a href="#"><i class="far fa-random"></i></a> --}}
                                 </ul>
                                 <div class="wsus__product_details">
                                     <a class="wsus__category" href="#">{{ $product->category->name }} </a>
@@ -112,21 +114,24 @@
                                         <span>(133 review)</span>
                                     </p>
                                     <a class="wsus__pro_name"
-                                        href="{{ route('product-detail', $product->slug) }}">{{ $product->name }}</a>
+                                        href="{{ route('product-detail', $product->slug) }}">{{ limitText($product->name, 50) }}</a>
                                     @if (checkDiscount($product))
                                         <p class="wsus__price">{{ $settings->currency_icon }}{{ $product->offer_price }}
-                                            <del>{{ $settings->currency_icon }}{{ $product->price }}</del></p>
+                                            <del>{{ $settings->currency_icon }}{{ $product->price }}</del>
+                                        </p>
                                     @else
                                         <p class="wsus__price">{{ $settings->currency_icon }}{{ $product->price }}</p>
                                     @endif
                                     <form class="shopping-cart-form">
-                                        <input type="hidden" name="product_id" value="{{$product->id}}">
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         @foreach ($product->variants as $variant)
-                                                <select class="d-none" name="variant_items[]">
-                                                    @foreach ($variant->productVariantItems as $variantItem)                                                    
-                                                    <option value="{{$variantItem->id}}" {{$variantItem->is_default == 1 ? 'selected' : ''}}>{{$variantItem->name}} (${{$variantItem->price}})</option>
-                                                    @endforeach
-                                                </select>
+                                            <select class="d-none" name="variant_items[]">
+                                                @foreach ($variant->productVariantItems as $variantItem)
+                                                    <option value="{{ $variantItem->id }}"
+                                                        {{ $variantItem->is_default == 1 ? 'selected' : '' }}>
+                                                        {{ $variantItem->name }} (${{ $variantItem->price }})</option>
+                                                @endforeach
+                                            </select>
                                         @endforeach
                                         <input name="qty" type="hidden" min="1" max="100" value="1" />
                                         <button class="add_cart" href="#" type="submit">add to cart</button>
@@ -147,12 +152,12 @@
         </div>
     </section>
     <!--============================
-                DAILY DEALS DETAILS END
-            ==============================-->
+                            DAILY DEALS DETAILS END
+                        ==============================-->
 
     <!--==========================
-    PRODUCT MODAL VIEW START
-    ===========================-->
+                PRODUCT MODAL VIEW START
+                ===========================-->
     @foreach ($flashSaleItems as $item)
         @php
             $product = \App\Models\Product::find($item->product_id);
@@ -207,7 +212,8 @@
                                         <p class="wsus__stock_area"><span class="in_stock">in stock</span> (167 item)</p>
                                         @if (checkDiscount($product))
                                             <h4>{{ $settings->currency_icon }}{{ $product->offer_price }}
-                                                <del>{{ $settings->currency_icon }}{{ $product->price }}</del></h4>
+                                                <del>{{ $settings->currency_icon }}{{ $product->price }}</del>
+                                            </h4>
                                         @else
                                             <h4>{{ $settings->currency_icon }}{{ $product->price }}</h4>
                                         @endif
@@ -235,7 +241,8 @@
                                                                             <option value="{{ $variantItem->id }}"
                                                                                 {{ $variantItem->is_default == 1 ? 'selected' : '' }}>
                                                                                 {{ $variantItem->name }}
-                                                                                (${{ $variantItem->price }})</option>
+                                                                                (${{ $variantItem->price }})
+                                                                            </option>
                                                                         @endif
                                                                     @endforeach
                                                                 </select>
@@ -256,8 +263,10 @@
                                                 <li><button type="submit" class="add_cart" href="#">add to
                                                         cart</button></li>
                                                 <li><a class="buy_now" href="#">buy now</a></li>
-                                                <li><a href="#"><i class="fal fa-heart"></i></a></li>
-                                                <li><a href="#"><i class="far fa-random"></i></a></li>
+                                                <li><a href="" class="add_to_wishlist"
+                                                        data-id="{{ $product->id }}"><i class="fal fa-heart"></i></a>
+                                                </li>
+                                                {{-- <li><a href="#"><i class="far fa-random"></i></a></li> --}}
                                             </ul>
                                         </form>
 
@@ -272,8 +281,8 @@
         </section>
     @endforeach
     <!--==========================
-    PRODUCT MODAL VIEW END
-    ===========================-->
+                PRODUCT MODAL VIEW END
+                ===========================-->
 @endsection
 
 @push('scripts')

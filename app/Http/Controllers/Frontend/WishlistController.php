@@ -11,7 +11,7 @@ class WishlistController extends Controller
 {
     public function index()
     {
-        $wishlistProducts = Wishlist::with('product')->where(['user_id' => Auth::user()->id])->get();
+        $wishlistProducts = Wishlist::with('product')->where(['user_id' => Auth::user()->id])->orderBy('id', 'DESC')->get();
         return view('frontend.pages.wishlist', compact('wishlistProducts'));
     }
 
@@ -24,7 +24,7 @@ class WishlistController extends Controller
         $wishlistCount = Wishlist::where(['product_id' => $request->id, 'user_id' => Auth::user()->id])->count();
 
         if ($wishlistCount > 0) {
-            return response(['status' => 'error', 'message' => 'The product is already at wishlist!']);
+            return response(['status' => 'error', 'message' => 'The product is already at the wishlist!']);
         }
 
         $wishlist = new Wishlist();
@@ -32,7 +32,9 @@ class WishlistController extends Controller
         $wishlist->user_id = Auth::user()->id;
         $wishlist->save();
 
-        return response(['status' => 'success', 'message' => 'Product is added into the wishlist!']);
+        $count = Wishlist::where('user_id', Auth::user()->id)->count();
+
+        return response(['status' => 'success', 'message' => 'Product is added into the wishlist!', 'count' => $count]);
     }
 
     public function destroy(string $id)

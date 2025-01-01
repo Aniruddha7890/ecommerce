@@ -133,6 +133,7 @@
                 },
                 success: function(data) {
                     if (data.status == 'success') {
+                        $('#wishlist_count').text(data.count);
                         toastr.success(data.message);
                     } else if (data.status == 'error') {
                         toastr.error(data.message);
