@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\FooterInfo;
+use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
 
 class FooterInfoController extends Controller
 {
+    use ImageUploadTrait;
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admin.footer.footer-info.index');
+        $footerInfo =  FooterInfo::first();
+        return view('admin.footer.footer-info.index', compact('footerInfo'));
     }
 
     /**
@@ -52,7 +57,34 @@ class FooterInfoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'logo' => ['nullable', 'image', 'max:3000'],
+            'phone' => ['max:100'],
+            'email' => ['max:100'],
+            'address' => ['max:300'],
+            'copyright' => ['max:200']
+        ]);
+
+        $footerInfo = FooterInfo::find($id);
+        /**
+         * Handle file update
+         */
+        $imagePath = $this->updateImage($request, 'logo', 'uploads', $footerInfo?->logo);
+
+        FooterInfo::updateOrCreate(
+            ['id' => $id],
+            [
+                'logo' => empty(!$imagePath) ? $imagePath : $footerInfo->logo,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'address' => $request->address,
+                'copyright' => $request->copyright
+            ]
+        );
+
+        toastr('Updated Successfully', 'success', 'Success');
+
+        return redirect()->back();
     }
 
     /**
