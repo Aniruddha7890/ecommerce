@@ -12,20 +12,12 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Create Footer Social</h4>
+                            <h4>Create Footer Item</h4>
 
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('admin.footer-socials.store') }}" method="POST">
+                            <form action="{{ route('admin.footer-grid-two.store') }}" method="POST">
                                 @csrf
-                                <div class="form-group">
-                                    <label>Icon</label>
-                                    <div>
-                                        <button class="btn btn-primary" data-icon="{{ old('icon') }}"
-                                            data-selected-class="btn-danger" data-unselected-class="btn-info"
-                                            role="iconpicker" name="icon"></button>
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <label>Name</label>
                                     <input type="text" class="form-control" name="name" value="{{ old('name') }}">

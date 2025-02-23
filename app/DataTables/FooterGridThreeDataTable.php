@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\FooterSocial;
+use App\Models\FooterGridThree;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class FooterSocialDataTable extends DataTable
+class FooterGridThreeDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,37 +23,34 @@ class FooterSocialDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
-                $editBtn = "<a href='" . route('admin.footer-socials.edit', $query->id) . "' class='btn btn-primary'><i class='far fa-edit'></i></a>";
-                $deleteBtn = "<a href='" . route('admin.footer-socials.destroy', $query->id) . "' class='btn btn-danger delete-item ml-2'><i class='fas fa-trash'></i></a>";
+                $editBtn = "<a href='" . route('admin.footer-grid-three.edit', $query->id) . "' class='btn btn-primary'><i class='far fa-edit'></i></a>";
+                $deleteBtn = "<a href='" . route('admin.footer-grid-three.destroy', $query->id) . "' class='btn btn-danger delete-item ml-2'><i class='fas fa-trash'></i></a>";
 
                 return $editBtn . $deleteBtn;
-            })
-            ->addColumn('icon', function ($query) {
-                return '<i style="font-size:40px" class="' . $query->icon . '"></i>';
             })
             ->addColumn('status', function ($query) {
                 if ($query->status == 1) {
                     $button = '<label class="custom-switch mt-2">
-                    <input type="checkbox" checked name="custom-switch-checkbox" data-id="' . $query->id . '" class="custom-switch-input change-status">
-                    <span class="custom-switch-indicator"></span>
-                </label>';
+                <input type="checkbox" checked name="custom-switch-checkbox" data-id="' . $query->id . '" class="custom-switch-input change-status">
+                <span class="custom-switch-indicator"></span>
+            </label>';
                 } else {
                     $button = '<label class="custom-switch mt-2">
-                    <input type="checkbox" name="custom-switch-checkbox" data-id="' . $query->id . '" class="custom-switch-input change-status">
-                    <span class="custom-switch-indicator"></span>
-                </label>';
+                <input type="checkbox" name="custom-switch-checkbox" data-id="' . $query->id . '" class="custom-switch-input change-status">
+                <span class="custom-switch-indicator"></span>
+            </label>';
                 }
 
                 return $button;
             })
-            ->rawColumns(['action', 'icon', 'status'])
+            ->rawColumns(['action', 'status'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(FooterSocial $model): QueryBuilder
+    public function query(FooterGridThree $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -64,7 +61,7 @@ class FooterSocialDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('footersocial-table')
+            ->setTableId('footergridthree-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             //->dom('Bfrtip')
@@ -86,10 +83,9 @@ class FooterSocialDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id')->width(100),
-            Column::make('icon')->width(300),
+            Column::make('id'),
             Column::make('name'),
-            Column::make('status')->width(200),
+            Column::make('status'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
@@ -103,6 +99,6 @@ class FooterSocialDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'FooterSocial_' . date('YmdHis');
+        return 'FooterGridThree_' . date('YmdHis');
     }
 }
