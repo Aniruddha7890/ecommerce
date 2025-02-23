@@ -145,5 +145,28 @@
             })
         })
 
+        // newsletter
+        $('#newsletter').on('submit', function(e) {
+            e.preventDefault();
+            let data = $(this).serialize();
+
+            $.ajax({
+                method: 'POST',
+                url: "{{ route('newsletter-request') }}",
+                data: data,
+                success: function(data) {
+
+                },
+                error: function(error) {
+                    let errors = error.responseJSON.errors
+                    if (errors) {
+                        $.each(errors, function(key, value) {
+                            toastr.error(value);
+                        })
+                    }
+                }
+            })
+        })
+
     })
 </script>
