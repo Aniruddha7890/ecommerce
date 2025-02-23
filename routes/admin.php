@@ -131,6 +131,7 @@ Route::get('transaction', [TransactionController::class, 'index'])->name('transa
 /** Setting routes */
 Route::get('setting', [SettingController::class, 'index'])->name('settings.index');
 Route::put('general-setting-update', [SettingController::class, 'generalSettingUpdate'])->name('general-setting-update');
+Route::put('email-setting-update', [SettingController::class, 'emailConfigSettingUpdate'])->name('email-setting-update');
 
 /** Home page setting routes */
 Route::get('home-page-setting', [HomePageSettingController::class, 'index'])->name('home-page-setting');
