@@ -23,15 +23,15 @@ class NewsletterSubscriberDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
-                $deleteBtn = "<a href='" . route('admin.footer-socials.destroy', $query->id) . "' class='btn btn-danger delete-item ml-2'><i class='fas fa-trash'></i></a>";
+                $deleteBtn = "<a href='" . route('admin.subscribers.destroy', $query->id) . "' class='btn btn-danger delete-item ml-2'><i class='fas fa-trash'></i></a>";
 
                 return $deleteBtn;
             })
             ->addColumn('is_verified', function ($query) {
                 if ($query->is_verified == 1) {
-                    return '<i style="font-size:40px" class="badge bg-success">Yes</i>';
+                    return '<i class="badge bg-success text-light">Yes</i>';
                 } else {
-                    return '<i style="font-size:40px" class="badge bg-danger">NO</i>';
+                    return '<i class="badge bg-danger text-light">NO</i>';
                 }
             })
             ->rawColumns(['action', 'is_verified'])

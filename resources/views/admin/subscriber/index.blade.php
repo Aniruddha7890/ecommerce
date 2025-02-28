@@ -13,6 +13,37 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
+                            <h4>Send email to all subscribers</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('admin.subscribers-send-mail') }}" method="POST">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="">Subject</label>
+                                    <input type="text" class="form-control" name="subject">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Message</label>
+                                    <textarea name="message" class="form-control" cols="30" rows="10"></textarea>
+                                </div>
+                                <button class="btn btn-primary" style="submit">Send</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <section class="section">
+
+        <div class="section-body">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
                             <h4>All Subscribers</h4>
                         </div>
                         <div class="card-body">

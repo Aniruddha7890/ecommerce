@@ -143,6 +143,8 @@ Route::put('product-slider-section-three', [HomePageSettingController::class, 'u
 
 /** Subscribers routes */
 Route::get('subscribers', [SubscribersController::class, 'index'])->name('subscribers.index');
+Route::delete('subscribers/{id}', [SubscribersController::class, 'destroy'])->name('subscribers.destroy');
+Route::post('subscribers-send-mail', [SubscribersController::class, 'sendMail'])->name('subscribers-send-mail');
 
 /** Footer routes */
 Route::resource('footer-info', FooterInfoController::class);
