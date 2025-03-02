@@ -140,6 +140,10 @@
                 </ul>
             </li>
 
+            <li><a class="nav-link {{ setActive(['admin.advertisement.index.*']) }}"
+                    href="{{ route('admin.advertisement.index') }}"><i class="far fa-square"></i>
+                    <span>Advertisement</span></a></li>
+
             <li><a class="nav-link {{ setActive(['admin.subscribers.index.*']) }}"
                     href="{{ route('admin.subscribers.index') }}"><i class="far fa-square"></i>
                     <span>Subscribers</span></a></li>
