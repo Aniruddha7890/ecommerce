@@ -9,25 +9,25 @@
                     <br>
                     <label class="custom-switch mt-2">
                         <input type="checkbox"
-                            {{ $homepage_section_banner_one->banner_one->status == 1 ? 'checked' : '' }} name="status"
+                            {{ @$homepage_section_banner_one->banner_one->status == 1 ? 'checked' : '' }} name="status"
                             class="custom-switch-input">
                         <span class="custom-switch-indicator"></span>
                     </label>
                 </div>
                 <div class="form-group">
-                    <img src="{{ asset($homepage_section_banner_one->banner_one->banner_image) }}" alt=""
+                    <img src="{{ asset(@$homepage_section_banner_one->banner_one->banner_image) }}" alt=""
                         width="150px">
                 </div>
                 <div class="form-group">
                     <label>Banner Image</label>
                     <input type="file" class="form-control" name="banner_image" value="">
                     <input type="hidden" class="form-control" name="banner_old_image"
-                        value="{{ $homepage_section_banner_one->banner_one->banner_image }}">
+                        value="{{ @$homepage_section_banner_one->banner_one->banner_image }}">
                 </div>
                 <div class="form-group">
                     <label>Banner Url</label>
                     <input type="text" class="form-control" name="banner_url"
-                        value="{{ $homepage_section_banner_one->banner_one->banner_url }}">
+                        value="{{ @$homepage_section_banner_one->banner_one->banner_url }}">
                 </div>
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>

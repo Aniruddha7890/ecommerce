@@ -150,6 +150,7 @@ Route::post('subscribers-send-mail', [SubscribersController::class, 'sendMail'])
 /** Advertisement routes */
 Route::get('advertisement', [AdvertisementController::class, 'index'])->name('advertisement.index');
 Route::put('advertisement/homepage-banner-section-one', [AdvertisementController::class, 'homepageBannerSectionOne'])->name('homepage-banner-section-one');
+Route::put('advertisement/homepage-banner-section-two', [AdvertisementController::class, 'homepageBannerSectionTwo'])->name('homepage-banner-section-two');
 
 /** Footer routes */
 Route::resource('footer-info', FooterInfoController::class);

@@ -5,10 +5,12 @@ namespace App\Traits;
 use Illuminate\Http\Request;
 use File;
 
-trait ImageUploadTrait {
+trait ImageUploadTrait
+{
 
-    public function uploadImage(Request $request, $inputName, $path){
-        if($request->hasFile($inputName)){
+    public function uploadImage(Request $request, $inputName, $path)
+    {
+        if ($request->hasFile($inputName)) {
 
             $image = $request->{$inputName};
             $ext = $image->getClientOriginalExtension();
@@ -19,11 +21,12 @@ trait ImageUploadTrait {
         }
     }
 
-    public function uploadMultiImage(Request $request, $inputName, $path){
+    public function uploadMultiImage(Request $request, $inputName, $path)
+    {
 
         $imagePaths = [];
 
-        if($request->hasFile($inputName)){
+        if ($request->hasFile($inputName)) {
 
             $images = $request->{$inputName};
 
@@ -38,10 +41,11 @@ trait ImageUploadTrait {
         }
     }
 
-    public function updateImage(Request $request, $inputName, $path, $oldPath=null){
-        if($request->hasFile($inputName)){
+    public function updateImage(Request $request, $inputName, $path, $oldPath = null)
+    {
+        if ($request->hasFile($inputName)) {
 
-            if(File::exists(public_path($oldPath))){
+            if (File::exists(public_path($oldPath))) {
                 File::delete(public_path($oldPath));
             }
 
@@ -54,10 +58,10 @@ trait ImageUploadTrait {
         }
     }
 
-    public function deleteImage(string $path){
-        if(File::exists(public_path($path))){
+    public function deleteImage(string $path)
+    {
+        if (File::exists(public_path($path))) {
             File::delete(public_path($path));
         }
     }
-
 }
